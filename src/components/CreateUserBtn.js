@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
 	Alert,
 	Button,
@@ -26,7 +26,6 @@ const INITIAL_VALUE = {
 };
 
 const CreateUserBtn = ({ uid }) => {
-	const [createdNewAccount, setCreatedNewAccount] = useState(false);
 	const [show, setShow] = useState(true);
 	const [formValue, setFormValue] = useState(INITIAL_VALUE);
 	const [isLoading, setIsLoaing] = useState(false);
@@ -60,7 +59,6 @@ const CreateUserBtn = ({ uid }) => {
 
 		setFormValue(INITIAL_VALUE);
 		setIsLoaing(false);
-		setCreatedNewAccount(true);
 	};
 
 	const onHide = () => {
@@ -70,14 +68,6 @@ const CreateUserBtn = ({ uid }) => {
 			setShow(false);
 		}
 	};
-
-	useEffect(() => {
-		return () => {
-			if (!createdNewAccount) {
-				Promise.all([auth.currentUser.delete()]);
-			}
-		};
-	}, [createdNewAccount]);
 
 	return (
 		<div>
