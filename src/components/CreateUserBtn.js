@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
 	Alert,
 	Button,
@@ -9,7 +9,7 @@ import {
 	Modal,
 	Schema,
 } from "rsuite";
-import { firestore } from "../misc/firebase";
+import { auth, firestore } from "../misc/firebase";
 
 const usersRef = firestore.collection("users");
 
@@ -26,6 +26,8 @@ const INITIAL_VALUE = {
 };
 
 const CreateUserBtn = ({ uid }) => {
+	const [createdNewAccount, setCreatedNewAccount] = useState(false);
+	const [show, setShow] = useState(true);
 	const [formValue, setFormValue] = useState(INITIAL_VALUE);
 	const [isLoading, setIsLoaing] = useState(false);
 	const formRef = useRef();
@@ -58,11 +60,28 @@ const CreateUserBtn = ({ uid }) => {
 
 		setFormValue(INITIAL_VALUE);
 		setIsLoaing(false);
+		setCreatedNewAccount(true);
 	};
+
+	const onHide = () => {
+		if (auth.currentUser) {
+			Promise.all([auth.currentUser.delete()]);
+		} else {
+			setShow(false);
+		}
+	};
+
+	useEffect(() => {
+		return () => {
+			if (!createdNewAccount) {
+				Promise.all([auth.currentUser.delete()]);
+			}
+		};
+	}, [createdNewAccount]);
 
 	return (
 		<div>
-			<Modal show>
+			<Modal show={show} onHide={onHide}>
 				<Modal.Header>
 					<Modal.Title>Enter your details</Modal.Title>
 				</Modal.Header>
