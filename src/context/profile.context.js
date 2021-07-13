@@ -6,6 +6,7 @@ const usersRef = firestore.collection("users");
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true)
 	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
@@ -20,14 +21,16 @@ export const ProfileProvider = ({ children }) => {
 						});
 					})
 					.catch((error) => Alert.error(error.message, 4000));
+          setIsLoading(false)
 			} else {
 				setProfile(null);
+        setIsLoading(false)
 			}
 		});
 	}, []);
 
 	return (
-		<ProfileContext.Provider value={false}>{children}</ProfileContext.Provider>
+		<ProfileContext.Provider value={{isLoading, profile}}>{children}</ProfileContext.Provider>
 	);
 };
 

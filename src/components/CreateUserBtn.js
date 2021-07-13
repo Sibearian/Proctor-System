@@ -28,7 +28,7 @@ const INITIAL_VALUE = {
 const CreateUserBtn = ({ uid }) => {
 	const [show, setShow] = useState(true);
 	const [formValue, setFormValue] = useState(INITIAL_VALUE);
-	const [isLoading, setIsLoaing] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const formRef = useRef();
 
 	const onFormChange = useCallback((value) => {
@@ -40,7 +40,7 @@ const CreateUserBtn = ({ uid }) => {
 			return;
 		}
 
-		setIsLoaing(true);
+		setIsLoading(true);
 
 		const newUserData = {
 			uid,
@@ -59,7 +59,8 @@ const CreateUserBtn = ({ uid }) => {
 			});
 
 		setFormValue(INITIAL_VALUE);
-		setIsLoaing(false);
+		setIsLoading(false);
+		
 	};
 
 	const onHide = () => {
@@ -72,7 +73,7 @@ const CreateUserBtn = ({ uid }) => {
 
 	return (
 		<div>
-			<Modal show={show} onHide={onHide}>
+			<Modal show={show} onHide={onHide} >
 				<Modal.Header>
 					<Modal.Title>Enter your details</Modal.Title>
 				</Modal.Header>
@@ -100,6 +101,7 @@ const CreateUserBtn = ({ uid }) => {
 						appearance="primary"
 						onClick={onSubmit}
 						disabled={isLoading}
+						
 					>
 						Submit
 					</Button>
