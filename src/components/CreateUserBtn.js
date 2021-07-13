@@ -43,6 +43,7 @@ const CreateUserBtn = ({ uid }) => {
 		setIsLoaing(true);
 
 		const newUserData = {
+			uid,
 			...formValue,
 			student: true,
 		};
