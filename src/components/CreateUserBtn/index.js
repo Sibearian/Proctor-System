@@ -7,28 +7,17 @@ import {
 	FormControl,
 	FormGroup,
 	Modal,
-	Schema,
 } from "rsuite";
-import { auth, firestore } from "../misc/firebase";
+import { auth, firestore } from "../../misc/firebase";
+import { INITIAL_VALUE, model } from "./form.helper";
 
-const usersRef = firestore.collection("users");
+const CreateUserBtn = () => {
+	const { uid } = auth.currentUser;
 
-const { StringType } = Schema.Types;
-
-const model = Schema.Model({
-	name: StringType().isRequired("required"),
-	branch: StringType().isRequired("tell me"),
-});
-
-const INITIAL_VALUE = {
-	name: "",
-	branch: "",
-};
-
-const CreateUserBtn = ({ uid }) => {
 	const [show, setShow] = useState(true);
 	const [formValue, setFormValue] = useState(INITIAL_VALUE);
 	const [isLoading, setIsLoading] = useState(false);
+
 	const formRef = useRef();
 
 	const onFormChange = useCallback((value) => {
@@ -36,19 +25,19 @@ const CreateUserBtn = ({ uid }) => {
 	}, []);
 
 	const onSubmit = () => {
-		if (!formRef.current.check()) {
+		if (!formRef.current.check() && !uid) {
 			return;
 		}
 
 		setIsLoading(true);
 
 		const newUserData = {
-			uid,
 			...formValue,
 			student: true,
 		};
 
-		usersRef
+		firestore
+			.collection("users")
 			.doc(String(uid))
 			.set(newUserData)
 			.then(() => {
@@ -56,24 +45,27 @@ const CreateUserBtn = ({ uid }) => {
 			})
 			.catch((error) => {
 				Alert.error(error.message, 4000);
+			})
+			.finally(() => {
+				setFormValue(INITIAL_VALUE);
+				setIsLoading(false);
+				window.location.reload(false);
 			});
-
-		setFormValue(INITIAL_VALUE);
-		setIsLoading(false);
-		
 	};
 
 	const onHide = () => {
+		if (isLoading) {
+			return;
+		}
 		if (auth.currentUser) {
 			Promise.all([auth.currentUser.delete()]);
-		} else {
 			setShow(false);
 		}
 	};
 
 	return (
 		<div>
-			<Modal show={show} onHide={onHide} >
+			<Modal show={show} onHide={onHide}>
 				<Modal.Header>
 					<Modal.Title>Enter your details</Modal.Title>
 				</Modal.Header>
@@ -101,7 +93,6 @@ const CreateUserBtn = ({ uid }) => {
 						appearance="primary"
 						onClick={onSubmit}
 						disabled={isLoading}
-						
 					>
 						Submit
 					</Button>

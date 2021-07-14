@@ -2,35 +2,43 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "rsuite";
 import { auth, firestore } from "../misc/firebase";
 
-const usersRef = firestore.collection("users");
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true)
-	const [profile, setProfile] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [profile, setProfile] = useState({});
 
 	useEffect(() => {
-		auth.onAuthStateChanged(async (authObj) => {
-			if (authObj) {
-				await usersRef
-					.where("uid", "==", authObj.uid)
-					.get()
-					.then((snapShot) => {
-						snapShot.forEach((user) => {
-							setProfile(user.data());
-						});
-					})
-					.catch((error) => Alert.error(error.message, 4000));
-          setIsLoading(false)
-			} else {
-				setProfile(null);
-        setIsLoading(false)
-			}
-		});
+		const getUserDoc = async () => {
+			auth.onAuthStateChanged(async (authObj) => {
+				if (authObj && auth.currentUser) {
+					firestore
+						.collection("users")
+						.doc(authObj.uid)
+						.get()
+						.then((user) => {
+							const data = {
+								user: user.data(),
+								uid: user.id,
+							};
+							setProfile(data);
+						})
+						.catch((error) => Alert.error(error.message, 4000));
+					setIsLoading(false);
+				} else {
+					setProfile(null);
+					setIsLoading(false);
+				}
+			});
+		};
+
+		getUserDoc();
 	}, []);
 
 	return (
-		<ProfileContext.Provider value={{isLoading, profile}}>{children}</ProfileContext.Provider>
+		<ProfileContext.Provider value={{ isLoading, profile }}>
+			{children}
+		</ProfileContext.Provider>
 	);
 };
 
