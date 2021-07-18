@@ -1,11 +1,14 @@
 import React from "react";
-import { Redirect, Route } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import { Container, Loader } from "rsuite";
 import { useProfile } from "../context/profile.context";
-import ProctorHome from "../pages/ProctorHome";
-import StudentHome from "../pages/StudentHome";
+import Dashboard from "../pages/Dashboard";
+import Messages from "../pages/Messages";
+import Settings from "../pages/Settings";
+import UserProfile from "../pages/UserProfile";
+import Navbar from "./Navbar";
 
-const PrivateRoute = ({ children, ...routeProps }) => {
+const PrivateRoute = () => {
 	const { isLoading, profile } = useProfile();
 
 	if (isLoading && !profile) {
@@ -21,9 +24,15 @@ const PrivateRoute = ({ children, ...routeProps }) => {
 	}
 
 	return (
-		<Route {...routeProps}>
-			{profile.user?.student ? <StudentHome /> : <ProctorHome />}
-		</Route>
+		<>
+			<Navbar />
+			<Switch>
+				<Route to="/dashboard" exact component={Dashboard} />
+				<Route to="/settings" exact component={Settings} />
+				<Route to="/profile" exact component={UserProfile} />
+				<Route to="/messages" exact component={Messages} />
+			</Switch>
+		</>
 	);
 };
 

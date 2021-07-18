@@ -1,0 +1,51 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { Icon, Nav, Sidenav } from "rsuite";
+
+const Navbar = () => {
+	return (
+		<Sidenav expanded={false} appearance="subtle">
+			<Sidenav.Body>
+				<Nav>
+					<Nav.Item
+						eventKey="dashboard"
+						icon={<Icon icon="dashboard" />}
+						componentClass={Link}
+						to="/dashboard"
+					>
+						Dashboard
+					</Nav.Item>
+
+					<Nav.Item
+						eventKey="messages"
+						icon={<Icon icon="send" />}
+						componentClass={Link}
+						to="/messages"
+					>
+						Messages
+					</Nav.Item>
+
+					<Nav.Item
+						eventKey="settings"
+						icon={<Icon icon="cogs" />}
+						componentClass={Link}
+						to="/settings"
+					>
+						Settings
+					</Nav.Item>
+
+					<Nav.Item
+						eventKey="profile"
+						icon={<Icon icon="user" />}
+						componentClass={Link}
+						to="/profile"
+					>
+						Profile
+					</Nav.Item>
+				</Nav>
+			</Sidenav.Body>
+		</Sidenav>
+	);
+};
+
+export default Navbar;
