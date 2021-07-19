@@ -1,2 +1,4 @@
 12/07/2021 : 2. Creating a new model window to create the new user and figured out the CURD's Create in firestore
 13/07/2021 : 3. Created a context API, now 1 problem is there. That is to reroute the user to '/' when the account is Created
+18/07/2021 : 4. Created the navbar
+19/07/2021 : 5. Made the Routes work properly
