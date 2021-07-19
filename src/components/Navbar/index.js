@@ -8,7 +8,7 @@ const Navbar = () => {
 			<Sidenav.Body>
 				<Nav>
 					<Nav.Item
-						eventKey="dashboard"
+						eventKey="/dashboard"
 						icon={<Icon icon="dashboard" />}
 						componentClass={Link}
 						to="/dashboard"
@@ -17,7 +17,7 @@ const Navbar = () => {
 					</Nav.Item>
 
 					<Nav.Item
-						eventKey="messages"
+						eventKey="/messages"
 						icon={<Icon icon="send" />}
 						componentClass={Link}
 						to="/messages"
@@ -26,7 +26,7 @@ const Navbar = () => {
 					</Nav.Item>
 
 					<Nav.Item
-						eventKey="settings"
+						eventKey="/settings"
 						icon={<Icon icon="cogs" />}
 						componentClass={Link}
 						to="/settings"
@@ -35,7 +35,7 @@ const Navbar = () => {
 					</Nav.Item>
 
 					<Nav.Item
-						eventKey="profile"
+						eventKey="/profile"
 						icon={<Icon icon="user" />}
 						componentClass={Link}
 						to="/profile"
