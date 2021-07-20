@@ -18,7 +18,7 @@ export const ProfileProvider = ({ children }) => {
 						.get()
 						.then((user) => {
 							const data = {
-								user: user.data(),
+								...user.data(),
 								uid: user.id,
 							};
 							setProfile(data);

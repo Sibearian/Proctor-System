@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router";
 import { Col, Grid, Row } from "rsuite";
 
 import Navbar from "../../components/Navbar";
-import Dashboard from "./Dashboard";
+import Dashboard from "../../components/Dashboard";
 import Messages from "./Messages";
 import Settings from "./Settings";
 import UserProfile from "./UserProfile";
