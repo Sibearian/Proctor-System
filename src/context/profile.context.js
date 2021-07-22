@@ -16,12 +16,16 @@ export const ProfileProvider = ({ children }) => {
 						.collection("users")
 						.doc(authObj.uid)
 						.get()
-						.then((user) => {
-							const data = {
-								...user.data(),
-								uid: user.id,
-							};
-							setProfile(data);
+						.then((doc) => {
+							if (doc.exists) {
+								const data = {
+									...doc.data(),
+									uid: doc.id,
+								};
+								setProfile(data);
+							} else {
+								setProfile(null);
+							}
 						})
 						.catch((error) => Alert.error(error.message, 4000));
 					setIsLoading(false);
