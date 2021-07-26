@@ -17,7 +17,7 @@ const Home = () => {
 				</Col>
 				<Col>
 					<Switch>
-						<Route path="/dashboard">
+						<Route path="/dashboard" exact>
 							<Dashboard />
 						</Route>
 						<Route path="/messages" exact>
@@ -28,6 +28,9 @@ const Home = () => {
 						</Route>
 						<Route path="/profile" exact>
 							<UserProfile />
+						</Route>
+						<Route path="/" exact>
+							<Dashboard />
 						</Route>
 					</Switch>
 				</Col>

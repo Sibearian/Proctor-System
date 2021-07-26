@@ -9,10 +9,10 @@ import { ProfileProvider } from "./context/profile.context";
 function App() {
 	return (
 		<ProfileProvider>
-			<Switch>
-				<PublicRoute path="/signin" />
-				<PrivateRoute/>
-			</Switch>
+				<Switch>
+					<PublicRoute path="/signin" />
+					<PrivateRoute />
+				</Switch>
 		</ProfileProvider>
 	);
 }

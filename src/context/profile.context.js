@@ -7,6 +7,7 @@ const ProfileContext = createContext();
 export const ProfileProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [profile, setProfile] = useState({});
+	const [studentDocs, setStudentDocs] = useState(null);
 
 	useEffect(() => {
 		const getUserDoc = async () => {
@@ -18,11 +19,24 @@ export const ProfileProvider = ({ children }) => {
 						.get()
 						.then((doc) => {
 							if (doc.exists) {
-								const data = {
+								setProfile({
 									...doc.data(),
 									uid: doc.id,
-								};
-								setProfile(data);
+								});
+
+								if (doc.data().student_list) {
+									const studentArray = [];
+									doc.data().student_list.map(async (student) => {
+										firestore
+											.collection("users")
+											.doc(student)
+											.get()
+											.then((studentDoc) =>
+												studentArray.push(studentDoc.data())
+											);
+									});
+									setStudentDocs(studentArray);
+								}
 							} else {
 								setProfile(null);
 							}
@@ -40,7 +54,7 @@ export const ProfileProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<ProfileContext.Provider value={{ isLoading, profile }}>
+		<ProfileContext.Provider value={{ isLoading, profile, studentDocs }}>
 			{children}
 		</ProfileContext.Provider>
 	);
