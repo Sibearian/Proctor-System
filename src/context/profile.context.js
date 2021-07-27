@@ -7,7 +7,10 @@ const ProfileContext = createContext();
 export const ProfileProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [profile, setProfile] = useState({});
-	const [studentDocs, setStudentDocs] = useState(null);
+	const [studentDocs, setStudentDocs] = useState({
+		isLoading: true,
+		data: null,
+	});
 
 	useEffect(() => {
 		const getUserDoc = async () => {
@@ -35,7 +38,7 @@ export const ProfileProvider = ({ children }) => {
 												studentArray.push(studentDoc.data())
 											);
 									});
-									setStudentDocs(studentArray);
+									setStudentDocs({ isLoading: false, data: studentArray });
 								}
 							} else {
 								setProfile(null);

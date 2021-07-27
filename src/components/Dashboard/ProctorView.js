@@ -1,27 +1,31 @@
-import React from "react";
-import { Loader } from "rsuite";
-import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
+import React, { useCallback, useState } from "react";
+import { Button } from "rsuite";
 import { useProfile } from "../../context/profile.context";
 import Card from "./Card";
 
-const loader = (
-	<PlaceholderParagraph rows={2}>
-		<Loader center content="loading" />
-	</PlaceholderParagraph>
-);
-
 const ProctorView = () => {
-	const { studentDocs } = useProfile();
+	const {
+		studentDocs: { isLoading, data },
+	} = useProfile();
+	const [canShow, setCanShow] = useState(false);
+	const [list, setList] = useState(null);
 
-	if (!studentDocs) {
-		return loader;
-	}
+	const onClick = useCallback(() => {
+		setCanShow(!canShow);
+		setList(
+			data.map((student, index) => <Card profile={student} key={index} />)
+		);
+	}, [canShow, data]);
 
-	const studentList = studentDocs.map((student, index) => {
-		return <Card profile={student} key={index} />;
-	});
-
-	return <div>{console.log(studentList)}</div>;
+	return (
+		<div>
+			<Button active={!isLoading} loading={isLoading} onClick={onClick}>
+				{canShow ? "hide student's list" : "show student's list"}
+			</Button>
+			{canShow ? <hr /> : null}
+			{canShow ? list : null}
+		</div>
+	);
 };
 
 export default ProctorView;
