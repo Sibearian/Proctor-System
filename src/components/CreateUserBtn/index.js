@@ -9,7 +9,7 @@ import {
 	Modal,
 } from "rsuite";
 import { auth, firestore } from "../../misc/firebase";
-import { INITIAL_VALUE, model } from "./form.helper";
+import { INITIAL_VALUE, model } from "../../misc/form.helper";
 
 const CreateUserBtn = () => {
 	const { uid } = auth.currentUser;
@@ -34,6 +34,7 @@ const CreateUserBtn = () => {
 		const newUserData = {
 			...formValue,
 			student: true,
+			profileURL: auth.currentUser.photoURL,
 		};
 
 		firestore

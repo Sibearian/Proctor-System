@@ -5,8 +5,17 @@ import { Container, Content, Sidebar } from "rsuite";
 import Navbar from "../../components/Navbar";
 import Dashboard from "../../components/Dashboard";
 import Messages from "../../components/Messages";
-import Settings from "./Settings";
-import UserProfile from "./UserProfile";
+import Settings from "../../components/Settings";
+
+const InvalidPage = () => {
+	return (
+		<div>
+			<h1>404</h1>
+			<hr />
+			Page not found
+		</div>
+	);
+};
 
 const Home = () => {
 	return (
@@ -16,21 +25,11 @@ const Home = () => {
 			</Sidebar>
 			<Content>
 				<Switch>
-					<Route path="/dashboard" exact>
-						<Dashboard />
-					</Route>
-					<Route path="/messages" exact>
-						<Messages />
-					</Route>
-					<Route path="/settings" exact>
-						<Settings />
-					</Route>
-					<Route path="/profile" exact>
-						<UserProfile />
-					</Route>
-					<Route path="/" exact>
-						<Dashboard />
-					</Route>
+					<Route exact path="/" component={Dashboard} />
+					<Route exact path="/dashboard" component={Dashboard} />
+					<Route exact path="/messages" component={Messages} />
+					<Route exact path="/settings" component={Settings} />
+					<Route path="/" component={InvalidPage} />
 				</Switch>
 			</Content>
 		</Container>

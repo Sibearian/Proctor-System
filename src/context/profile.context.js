@@ -25,6 +25,9 @@ export const ProfileProvider = ({ children }) => {
 								setProfile({
 									...doc.data(),
 									uid: doc.id,
+									avatar: doc.data().photoURL
+										? doc.data().photoURL
+										: auth.currentUser.photoURL,
 								});
 
 								if (doc.data().student_list) {

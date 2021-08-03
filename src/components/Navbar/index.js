@@ -36,20 +36,11 @@ const Navbar = () => {
 
 					<Nav.Item
 						eventKey="settings"
-						icon={<Icon icon="cogs" />}
+						icon={<Icon icon="gears2" />}
 						componentClass={Link}
 						to="/settings"
 					>
 						Settings
-					</Nav.Item>
-
-					<Nav.Item
-						eventKey="profile"
-						icon={<Icon icon="user" />}
-						componentClass={Link}
-						to="/profile"
-					>
-						Profile
 					</Nav.Item>
 				</Nav>
 			</Sidenav.Body>

@@ -8,7 +8,7 @@ const Card = ({ profile }) => {
 				<Col md={12}>
 					<Row>
 						<Col xs={2}>
-							<Avatar>
+							<Avatar src={profile.photoURL ? profile.photoURL : ""}>
 								{String(profile.name)
 									.split(" ")
 									.map((word, index) => {
