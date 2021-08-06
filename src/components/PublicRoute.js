@@ -5,7 +5,7 @@ import { useProfile } from "../context/profile.context";
 import SignIn from "../pages/SignIn";
 
 const PublicRoute = ({ children, ...routeProps }) => {
-	const { isLoading, profile } = useProfile();
+	const { profile: {isLoading, profile} } = useProfile();
 
 	if (isLoading && !profile) {
 		return (

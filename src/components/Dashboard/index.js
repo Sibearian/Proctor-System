@@ -4,7 +4,7 @@ import ProctorView from "./ProctorView";
 import StudentView from "./StudentView";
 
 const Dashboard = () => {
-	const { profile } = useProfile();
+	const { profile: {profile} } = useProfile();
 	return (
 		<div>
 			<h3>Dashboard</h3>

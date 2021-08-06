@@ -5,7 +5,7 @@ import { useProfile } from "../context/profile.context";
 import Home from "../pages/Home";
 
 const PrivateRoute = () => {
-	const { isLoading, profile } = useProfile();
+	const { profile: {isLoading, profile} } = useProfile();
 
 	if (isLoading && !profile) {
 		return (

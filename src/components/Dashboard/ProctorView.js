@@ -20,7 +20,7 @@ const ProctorView = () => {
 	return (
 		<div>
 			<Button active={!isLoading} loading={isLoading} onClick={onClick}>
-				{canShow ? "hide student's list" : "show student's list"}
+				{canShow ? "Hide Students" : "Show Students"}
 			</Button>
 			{canShow ? <hr /> : null}
 			{canShow ? list : null}

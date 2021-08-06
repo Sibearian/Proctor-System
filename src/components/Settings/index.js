@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Col, Grid, Row } from "rsuite";
 import { useProfile } from "../../context/profile.context";
+import SettingsModal from "./SettingsModal";
 
 // const acceptedFileTypes = ["image/png", "image/jpeg", "image/pjpeg"];
 // const isValidFile = (file) => acceptedFileTypes.includes(file.type);
@@ -17,67 +18,49 @@ import { useProfile } from "../../context/profile.context";
 // 	});
 // };
 
-const Settings = () => {
-	const { profile } = useProfile();
+const InfoRow = ({ name, value, ...props }) => {
+	return (
+		<Col {...props} xs={4}>
+			{name} : <h6> {value} </h6>
+		</Col>
+	);
+};
 
-	const onClick = () => {};
+const Settings = () => {
+	const { profile: { profile} } = useProfile();
+	const [editInfo, setEditInfo] = useState(false);
+	const onClickEdit = () => {
+		setEditInfo(true);
+	};
 
 	return (
 		<div>
 			<Grid fluid>
 				<Row>
-					<Col
-						xs={4}
-						componentClass={Button}
-						onClick={onClick}
-						appearance="subtle"
-						block
-						ripple={false}
-					>
+					<InfoRow name="Name" value={profile.name} />
+					<Col componentClass={Button}>
 						<Row>
-							<Avatar src={`${profile.avatar}`} size="lg" circle>
-								{String(profile.name)
-									.split(" ")
-									.map((word, index) => {
-										if (index < 2) {
-											return word[0];
-										}
-										return "";
-									})}
-							</Avatar>
+							<Avatar src={`${profile.avatar}`} size="lg" circle />
 						</Row>
 						<Row>Change Profile Picture</Row>
 					</Col>
-					<Col>
-						<Row>
-							<Col xs={8}>
-								Name : <h6> {profile.name} </h6>
-							</Col>
-						</Row>
-					</Col>
-					<Col>
-						<Row>
-							<Col xs={8}>
-								Register number : <h6> {profile.reg_no} </h6>
-							</Col>
-						</Row>
-					</Col>
-					<Col>
-						<Row>
-							<Col xs={8}>
-								Roll number : <h6> {profile.roll_no} </h6>
-							</Col>
-						</Row>
-					</Col>
-					<Col>
-						<Row>
-							<Col xs={8}>
-								Branch : <h6> {profile.branch} </h6>
-							</Col>
-						</Row>
+				</Row>
+				<Row>
+					<InfoRow name="Register number" value={profile.reg_no} />
+					<InfoRow name="Roll number" value={profile.roll_no} />
+				</Row>
+				<Row>
+					<InfoRow name="Branch" value={profile.branch} />
+				</Row>
+				<Row>
+					<Col xs={4}>
+						<Button block appearance="primary" onClick={onClickEdit}>
+							Edit profile
+						</Button>
 					</Col>
 				</Row>
 			</Grid>
+			{editInfo && <SettingsModal reset={setEditInfo} />}
 		</div>
 	);
 };

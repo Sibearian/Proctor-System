@@ -63,7 +63,7 @@ const SignIn = () => {
 					</Row>
 				</Grid>
 			</Container>
-			{newUID && <CreateUserBtn uid={newUID} />}
+			{newUID && <CreateUserBtn />}
 		</div>
 	);
 };

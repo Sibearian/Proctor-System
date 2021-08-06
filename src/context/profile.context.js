@@ -22,24 +22,29 @@ export const ProfileProvider = ({ children }) => {
 						.get()
 						.then((doc) => {
 							if (doc.exists) {
+								const { profileURL: userAvatar, ...userData } = doc.data();
 								setProfile({
-									...doc.data(),
-									uid: doc.id,
-									avatar: doc.data().photoURL
-										? doc.data().photoURL
-										: auth.currentUser.photoURL,
+									avatar: userAvatar,
+									...userData,
 								});
 
-								if (doc.data().student_list) {
+								const { student_list: studentList } = userData;
+
+								if (studentList) {
 									const studentArray = [];
-									doc.data().student_list.map(async (student) => {
+									studentList.map(async (student) => {
 										firestore
 											.collection("users")
 											.doc(student)
 											.get()
-											.then((studentDoc) =>
-												studentArray.push(studentDoc.data())
-											);
+											.then((studentDoc) => {
+												const { profileURL: avatar, ...data } =
+													studentDoc.data();
+												studentArray.push({
+													avatar,
+													...data,
+												});
+											});
 									});
 									setStudentDocs({ isLoading: false, data: studentArray });
 								}
@@ -60,7 +65,9 @@ export const ProfileProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<ProfileContext.Provider value={{ isLoading, profile, studentDocs }}>
+		<ProfileContext.Provider
+			value={{ profile: { isLoading, profile }, studentDocs }}
+		>
 			{children}
 		</ProfileContext.Provider>
 	);
