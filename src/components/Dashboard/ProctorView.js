@@ -12,6 +12,7 @@ const ProctorView = () => {
 
 	const onClick = useCallback(() => {
 		setCanShow(!canShow);
+		console.log(data);
 		setList(
 			data.map((student, index) => <Card profile={student} key={index} />)
 		);

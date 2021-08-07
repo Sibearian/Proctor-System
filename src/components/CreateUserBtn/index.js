@@ -34,7 +34,7 @@ const CreateUserBtn = () => {
 		const newUserData = {
 			...formValue,
 			student: true,
-			profileURL: auth.currentUser.photoURL,
+			avatar: auth.currentUser.photoURL,
 		};
 
 		firestore

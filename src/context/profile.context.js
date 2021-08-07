@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Alert } from "rsuite";
 import { auth, firestore } from "../misc/firebase";
 
 const ProfileContext = createContext();
+const usersRef = firestore.collection("users");
 
 export const ProfileProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -13,55 +13,49 @@ export const ProfileProvider = ({ children }) => {
 	});
 
 	useEffect(() => {
-		const getUserDoc = async () => {
-			auth.onAuthStateChanged(async (authObj) => {
-				if (authObj && auth.currentUser) {
-					firestore
-						.collection("users")
-						.doc(authObj.uid)
-						.get()
-						.then((doc) => {
-							if (doc.exists) {
-								const { profileURL: userAvatar, ...userData } = doc.data();
-								setProfile({
-									avatar: userAvatar,
-									...userData,
+		let unSubUserDoc;
+		let unSubStudentDoc;
+
+		const unSubAuth = auth.onAuthStateChanged((authObj) => {
+			if (authObj && auth.currentUser) {
+				unSubUserDoc = usersRef.doc(authObj.uid).onSnapshot((docSnapshot) => {
+					if (!docSnapshot.exists) {
+						setProfile(null);
+					}
+
+					const { ...docData } = docSnapshot.data();
+
+					setProfile({ ...docData });
+
+					const { student_list: studentList } = docData;
+
+					if (studentList) {
+						unSubStudentDoc = usersRef
+							.where("__name__", "in", studentList)
+							.onSnapshot((studentDocSnapshot) => {
+								const data = studentDocSnapshot.docs.map((student) =>
+									student.data()
+								);
+
+								setStudentDocs({
+									isLoading: false,
+									data,
 								});
+							});
+					}
+				});
+				setIsLoading(false);
+			} else {
+				setProfile(null);
+				setIsLoading(false);
+			}
+		});
 
-								const { student_list: studentList } = userData;
-
-								if (studentList) {
-									const studentArray = [];
-									studentList.map(async (student) => {
-										firestore
-											.collection("users")
-											.doc(student)
-											.get()
-											.then((studentDoc) => {
-												const { profileURL: avatar, ...data } =
-													studentDoc.data();
-												studentArray.push({
-													avatar,
-													...data,
-												});
-											});
-									});
-									setStudentDocs({ isLoading: false, data: studentArray });
-								}
-							} else {
-								setProfile(null);
-							}
-						})
-						.catch((error) => Alert.error(error.message, 4000));
-					setIsLoading(false);
-				} else {
-					setProfile(null);
-					setIsLoading(false);
-				}
-			});
+		return () => {
+			unSubAuth();
+			unSubUserDoc();
+			unSubStudentDoc();
 		};
-
-		getUserDoc();
 	}, []);
 
 	return (
