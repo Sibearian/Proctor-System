@@ -13,8 +13,8 @@ export const ProfileProvider = ({ children }) => {
 	});
 
 	useEffect(() => {
-		let unSubUserDoc;
-		let unSubStudentDoc;
+		let unSubUserDoc = () => {};
+		let unSubStudentDoc = () => {};
 
 		const unSubAuth = auth.onAuthStateChanged((authObj) => {
 			if (authObj && auth.currentUser) {
@@ -27,11 +27,9 @@ export const ProfileProvider = ({ children }) => {
 
 					setProfile({ ...docData });
 
-					const { student_list: studentList } = docData;
-
-					if (studentList) {
+					if (!docData.student_of) {
 						unSubStudentDoc = usersRef
-							.where("__name__", "in", studentList)
+							.where("student_of", "==", `${authObj.uid}`)
 							.onSnapshot((studentDocSnapshot) => {
 								const data = studentDocSnapshot.docs.map((student) =>
 									student.data()

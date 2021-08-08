@@ -1,5 +1,12 @@
 import React, { useCallback, useRef, useState } from "react";
-import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from "rsuite";
+import {
+	Button,
+	ControlLabel,
+	Form,
+	FormControl,
+	FormGroup,
+	Modal,
+} from "rsuite";
 import { auth } from "../../misc/firebase";
 import { INITIAL_VALUE, model } from "../../misc/form.helper";
 
@@ -9,8 +16,9 @@ const SettingsModal = ({ reset }) => {
 	const [formValue, setFormValue] = useState(INITIAL_VALUE);
 
 	const { uid } = auth.currentUser;
-	
-	const formRef = useRef()
+
+
+	const formRef = useRef();
 
 	const onHide = () => {
 		setShow(false);
@@ -20,14 +28,16 @@ const SettingsModal = ({ reset }) => {
 	const onFormChange = useCallback((value) => {
 		setFormValue(value);
 	}, []);
-	
+
 	const onSubmit = () => {
 		if (!formRef.current.check() && !uid) {
 			return;
 		}
 
+		console.log(formValue);
+
 		setIsLoading(true);
-	}
+	};
 
 	return (
 		<Modal show={show} onHide={onHide}>
@@ -35,33 +45,33 @@ const SettingsModal = ({ reset }) => {
 				<Modal.Title>Edit Profile</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			<Form
-						ref={formRef}
-						onChange={onFormChange}
-						formValue={formValue}
-						model={model}
-					>
-						<FormGroup>
-							<ControlLabel>name</ControlLabel>
-							<FormControl name="name" />
-						</FormGroup>
+				<Form
+					ref={formRef}
+					onChange={onFormChange}
+					formValue={formValue}
+					model={model}
+				>
+					<FormGroup>
+						<ControlLabel>name</ControlLabel>
+						<FormControl name="name" />
+					</FormGroup>
 
-						<FormGroup>
-							<ControlLabel>Branch</ControlLabel>
-							<FormControl name="branch" />
-						</FormGroup>
-					</Form>
+					<FormGroup>
+						<ControlLabel>Branch</ControlLabel>
+						<FormControl name="branch" />
+					</FormGroup>
+				</Form>
 			</Modal.Body>
-				<Modal.Footer>
-					<Button
-						block
-						appearance="primary"
-						onClick={onSubmit}
-						disabled={isLoading}
-					>
-						Submit
-					</Button>
-				</Modal.Footer>
+			<Modal.Footer>
+				<Button
+					block
+					appearance="primary"
+					onClick={onSubmit}
+					disabled={isLoading}
+				>
+					Submit
+				</Button>
+			</Modal.Footer>
 		</Modal>
 	);
 };
