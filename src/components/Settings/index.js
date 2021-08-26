@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Button, Col, Grid, Row } from "rsuite";
 import { useProfile } from "../../context/profile.context";
+import ProfileEditor from "../../pages/profileEditor";
 import SettingsModal from "./SettingsModal";
 
 // const acceptedFileTypes = ["image/png", "image/jpeg", "image/pjpeg"];
@@ -29,6 +30,38 @@ const InfoRow = ({ name, value, ...props }) => {
 	);
 };
 
+
+// <Grid fluid>
+// <Row>
+// 	<Col>
+// 		<Avatar src={`${profile.avatar}`} size="lg" circle />
+// 	</Col>
+// </Row>
+
+// <Row>
+// 	<InfoRow name="Name" value={profile.name} />
+// </Row>
+
+// {profile.student_of && (
+// 	<Row>
+// 		<InfoRow name="Register number" value={profile.reg_no} />
+// 		<InfoRow name="Roll number" value={profile.roll_no} />
+// 	</Row>
+// )}
+
+// <Row>
+// 	<InfoRow name="Branch" value={profile.branch} />
+// </Row>
+// <Row>
+// 	<Col xs={4}>
+// 		<Button block appearance="primary" onClick={onClickEdit}>
+// 			Edit profile
+// 		</Button>
+// 	</Col>
+// </Row>
+// </Grid>
+// {editInfo && <SettingsModal reset={setEditInfo} />}
+
 const Settings = () => {
 	const {
 		profile: { profile },
@@ -48,36 +81,7 @@ const Settings = () => {
 
 	return (
 		<div>
-			<Grid fluid>
-				<Row>
-					<Col>
-						<Avatar src={`${profile.avatar}`} size="lg" circle />
-					</Col>
-				</Row>
-
-				<Row>
-					<InfoRow name="Name" value={profile.name} />
-				</Row>
-
-				{profile.student_of && (
-					<Row>
-						<InfoRow name="Register number" value={profile.reg_no} />
-						<InfoRow name="Roll number" value={profile.roll_no} />
-					</Row>
-				)}
-
-				<Row>
-					<InfoRow name="Branch" value={profile.branch} />
-				</Row>
-				<Row>
-					<Col xs={4}>
-						<Button block appearance="primary" onClick={onClickEdit}>
-							Edit profile
-						</Button>
-					</Col>
-				</Row>
-			</Grid>
-			{editInfo && <SettingsModal reset={setEditInfo} />}
+			<ProfileEditor profile={profile}/>
 		</div>
 	);
 };

@@ -12,8 +12,8 @@ export const INITIAL_VALUE = {
 };
 
 export const model = Schema.Model({
-	name: StringType().isRequired("Required"),
-	age: NumberType().isInteger().range(13, 100).isRequired("Required"),
+	name: StringType("Plese enter your name").isRequired("Required"),
+	age: NumberType("Please enter a valid age").isInteger().range(13, 100).isRequired("Required"),
 	branch: StringType().isRequired("Required"),
 	blood_group: StringType().isRequired("Required"),
 	semester: NumberType().isRequired("Required").range(1, 6),
