@@ -34,8 +34,6 @@ const SettingsModal = ({ reset }) => {
 			return;
 		}
 
-		console.log(formValue);
-
 		setIsLoading(true);
 	};
 
