@@ -19,7 +19,7 @@ export const ProfileProvider = ({ children }) => {
 		const unSubAuth = auth.onAuthStateChanged((authObj) => {
 			if (authObj && auth.currentUser) {
 				unSubUserDoc = usersRef.doc(authObj.uid).onSnapshot((docSnapshot) => {
-					if (!docSnapshot.exists || docSnapshot.data()) {
+					if (!docSnapshot.exists || !docSnapshot.data()) {
 						setProfile(null);
 					} else {
 						const { ...docData } = docSnapshot.data();

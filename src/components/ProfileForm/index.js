@@ -113,27 +113,28 @@ const ProfileForm = ({ profile }) => {
 						/>
 					</FormGroup>
 
-					<Container>
-						<Content>
-							<img
-								src={profile.avatar || photoURL}
-								style={{
-									height: 150,
-									width: 150,
-									borderRadius: "50%",
-									margin: 25,
-								}}
-								alt={profile.name || displayName}
-							/>
-						</Content>
-						{profile.name && (
+					{profile.name && (
+						<Container>
+							<Content>
+								<img
+									src={profile.avatar || photoURL}
+									style={{
+										height: 150,
+										width: 150,
+										borderRadius: "50%",
+										margin: 25,
+									}}
+									alt={profile.name || displayName}
+								/>
+							</Content>
+
 							<Footer>
 								<Button>
 									<AvatarUploadBtn />
 								</Button>
 							</Footer>
-						)}
-					</Container>
+						</Container>
+					)}
 				</Form>
 			</Content>
 			<Footer>
