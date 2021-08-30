@@ -3,15 +3,9 @@ import { useProfile } from "../../context/profile.context";
 import ProfileForm from "../ProfileForm";
 
 const Settings = () => {
-	const {
-		profile: { profile },
-	} = useProfile();
+	const { profile } = useProfile();
 
-	return (
-		<div>
-			<ProfileForm profile={profile} />
-		</div>
-	);
+	return <ProfileForm profile={profile} />;
 };
 
 export default Settings;

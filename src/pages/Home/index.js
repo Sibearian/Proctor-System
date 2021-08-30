@@ -26,7 +26,6 @@ const Home = () => {
 			<Content>
 				<Switch>
 					<Route exact path="/" component={Dashboard} />
-					<Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/messages" component={Messages} />
 					<Route exact path="/settings" component={Settings} />
 					<Route path="/" component={InvalidPage} />

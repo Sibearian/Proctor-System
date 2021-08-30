@@ -5,21 +5,25 @@ import { useProfile } from "../context/profile.context";
 import SignIn from "../pages/SignIn";
 
 const PublicRoute = ({ children, ...routeProps }) => {
-	const { profile: {isLoading, profile} } = useProfile();
+  const { isLoading, profile } = useProfile();
 
-	if (isLoading && !profile) {
-		return (
-			<Container>
-				<Loader center vertical size="md" content="Loading" speed="fast" />;
-			</Container>
-		);
-	}
+  if (isLoading && !profile) {
+    return (
+      <Container>
+        <Loader center vertical size="md" content="Loading" speed="fast" />;
+      </Container>
+    );
+  }
 
-	if (profile && !isLoading) {
-		return <Redirect to="/dashboard" />;
-	}
+  if (profile && !isLoading) {
+    return <Redirect to="/" />;
+  }
 
-	return <Route {...routeProps}><SignIn /></Route>;
+  return (
+    <Route {...routeProps}>
+      <SignIn />
+    </Route>
+  );
 };
 
 export default PublicRoute;

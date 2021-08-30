@@ -23,7 +23,7 @@ import AvatarUploadBtn from "./AvatarUploadBtn";
 const ProfileForm = ({ profile }) => {
 	const [formValue, setFormValue] = useState(INITIAL_VALUE || profile);
 	const [isLoading, setIsLoading] = useState(false);
-	const { uid, photoURL, displayName } = auth.currentUser || {};
+	const { uid, photoURL, displayName, email } = auth.currentUser || {};
 
 	const formRef = useRef();
 
@@ -40,8 +40,9 @@ const ProfileForm = ({ profile }) => {
 
 		const newUserData = {
 			...formValue,
-			student: true,
+			student_of: true,
 			avatar: photoURL,
+			email,
 		};
 
 		firestore

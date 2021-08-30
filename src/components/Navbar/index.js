@@ -20,7 +20,7 @@ const Navbar = () => {
 						eventKey="dashboard"
 						icon={<Icon icon="dashboard" />}
 						componentClass={Link}
-						to="/dashboard"
+						to="/"
 					>
 						Dashboard
 					</Nav.Item>

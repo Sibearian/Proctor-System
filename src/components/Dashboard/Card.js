@@ -32,8 +32,9 @@ const Card = ({ profile }) => {
 					<h6>{profile.name}</h6>
 				</Header>
 				<Content>
-					<span style={{ padding: 20 }}>Roll No : {profile.roll_no}</span>
-					<span style={{ padding: 20 }}>Register No : {profile.reg_no}</span>
+					<span style={{ padding: 20 }}>
+						Register No : {profile.registration_number}
+					</span>
 				</Content>
 			</Container>
 			<Sidebar

@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { Button } from "rsuite";
-import { useProfile } from "../../context/profile.context";
+import { useStudentDocs } from "../../context/student.context";
 import Card from "./Card";
 
 const ProctorView = () => {
 	const {
 		studentDocs: { isLoading, data },
-	} = useProfile();
+	} = useStudentDocs();
 
 	const [canShow, setCanShow] = useState(false);
 	const [list, setList] = useState(null);
