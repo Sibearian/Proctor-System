@@ -40,7 +40,7 @@ const ProfileForm = ({ profile }) => {
 
 		const newUserData = {
 			...formValue,
-			student_of: true,
+			student_of: "not_assigned",
 			avatar: photoURL,
 			email,
 		};

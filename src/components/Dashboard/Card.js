@@ -14,7 +14,7 @@ const Card = ({ profile }) => {
 			<Sidebar width={50} style={{ paddingLeft: 5, alignSelf: "center" }}>
 				<Avatar
 					src={profile.avatar}
-					style={{ borderRadius: 10, marginTop: 5 }}
+					style={{ borderRadius: 10, marginTop: 5, background: "#FFFFFF", color: "#000000" }}
 					alt={profile.name}
 				>
 					{String(profile.name)
