@@ -1,6 +1,5 @@
 import React from "react";
 import { useProfile } from "../../context/profile.context";
-import { StudentProvider } from "../../context/student.context";
 import ProctorView from "./ProctorView";
 import StudentView from "./StudentView";
 
@@ -12,9 +11,7 @@ const Dashboard = () => {
 			{profile.student_of !== false ? (
 				<StudentView profile={profile} />
 			) : (
-				<StudentProvider>
-					<ProctorView />
-				</StudentProvider>
+				<ProctorView />
 			)}
 		</div>
 	);

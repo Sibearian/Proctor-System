@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal } from "rsuite";
+import { Alert, Modal } from "rsuite";
 import { auth } from "../../misc/firebase";
 import ProfileForm from "../ProfileForm";
 
@@ -10,6 +10,7 @@ const CreateUserBtn = () => {
 		if (auth.currentUser) {
 			await auth.currentUser.delete();
 			setShow(false);
+			Alert.warning("Account deleted")
 		}
 	};
 

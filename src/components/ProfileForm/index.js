@@ -22,7 +22,7 @@ import AvatarUploadBtn from "./AvatarUploadBtn";
 
 const ProfileForm = ({ profile }) => {
 	const [formValue, setFormValue] = useState(INITIAL_VALUE || profile);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isUploading, setIsUploading] = useState(false);
 	const { uid, photoURL, displayName, email } = auth.currentUser || {};
 
 	const formRef = useRef();
@@ -36,12 +36,21 @@ const ProfileForm = ({ profile }) => {
 			return;
 		}
 
-		setIsLoading(true);
+		if (
+			Object.keys(formValue).some(
+				(value) => formValue[value] === "" || formValue[value] < 1
+			)
+		) {
+			Alert.warning("Please enter all the fields");
+			return;
+		}
+
+		setIsUploading(true);
 
 		const newUserData = {
 			...formValue,
 			student_of: "not_assigned",
-			avatar: photoURL,
+			avatar: photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
 			email,
 		};
 
@@ -57,11 +66,10 @@ const ProfileForm = ({ profile }) => {
 			})
 			.finally(() => {
 				setFormValue(INITIAL_VALUE);
-				setIsLoading(false);
+				setIsUploading(false);
 				window.location.reload(false);
 			});
 	};
-
 	return (
 		<Container>
 			<Content>
@@ -93,7 +101,6 @@ const ProfileForm = ({ profile }) => {
 							name="semester"
 							data={semesters}
 							accepter={SelectPicker}
-							defaultValue={profile.semester}
 						/>
 					</FormGroup>
 
@@ -143,7 +150,7 @@ const ProfileForm = ({ profile }) => {
 					block
 					appearance="primary"
 					onClick={onFormSubmit}
-					disabled={isLoading}
+					disabled={isUploading}
 				>
 					Submit
 				</Button>

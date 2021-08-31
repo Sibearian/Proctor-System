@@ -24,6 +24,7 @@ const Home = () => {
 				<Navbar />
 			</Sidebar>
 			<Content>
+				
 				<Switch>
 					<Route exact path="/" component={Dashboard} />
 					<Route exact path="/messages" component={Messages} />

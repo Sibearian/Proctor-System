@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from "react";
-import { Loader} from "rsuite";
+import { Loader } from "rsuite";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
-import Card from "./Card";
+import Card from "../Card";
 
 const StudentView = ({ profile }) => {
 	if (!profile.name) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Container, Content, Header, Sidebar } from "rsuite";
 
-const Card = ({ profile }) => {
+const Card = ({ profile, children }) => {
 	return (
 		<Container
 			style={{
@@ -14,7 +14,12 @@ const Card = ({ profile }) => {
 			<Sidebar width={50} style={{ paddingLeft: 5, alignSelf: "center" }}>
 				<Avatar
 					src={profile.avatar}
-					style={{ borderRadius: 10, marginTop: 5, background: "#FFFFFF", color: "#000000" }}
+					style={{
+						borderRadius: 10,
+						marginTop: 5,
+						background: "#FFFFFF",
+						color: "#000000",
+					}}
 					alt={profile.name}
 				>
 					{String(profile.name)
@@ -40,14 +45,11 @@ const Card = ({ profile }) => {
 			<Sidebar
 				width={50}
 				style={{
-					backgroundColor: profile.is_above_threshold ? "#C6ECAE" : "#D5573B",
 					borderEndEndRadius: 15,
 					borderTopRightRadius: 15,
 				}}
 			>
-				<div style={{ textAlign: "center", marginTop: 15, borderRadius: 25 }}>
-					{profile.is_above_threshold ? "yes" : "no"}
-				</div>
+				{children}
 			</Sidebar>
 		</Container>
 	);
