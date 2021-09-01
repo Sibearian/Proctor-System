@@ -4,7 +4,7 @@ import { Container, Content, Sidebar } from "rsuite";
 
 import Navbar from "../../components/Navbar";
 import Dashboard from "../../components/Dashboard";
-import Messages from "../../components/Messages";
+import Messages from "../../components/message-window";
 import Settings from "../../components/Settings";
 
 const InvalidPage = () => {
