@@ -13,12 +13,6 @@ const Bottom = () => {
 		setInput(value);
 	}, []);
 
-	const onKeyDown = (ev) => {
-		if (ev.keyCode === 13) {
-			ev.preventDefault();
-		}
-	};
-
 	const onSendClick = async () => {
 		if (input.trim() === "") {
 			return;
@@ -32,7 +26,7 @@ const Bottom = () => {
 			.update({
 				name: profile.name,
 				avatar: profile.avatar,
-				[Date.now()]: input,
+				[Date.now()]: { text: input },
 			})
 
 			.then(() => {
@@ -43,21 +37,33 @@ const Bottom = () => {
 			.catch((err) => {
 				Alert.error(err.message, 4000);
 				setIsLoading(false);
-			});
+			})
+
+			.finally(() => setInput(""));
 	};
 
-	const afterUpload = useCallback(async (files) => {
-		setIsLoading(true);
+	const onKeyDown = (ev) => {
+		if (ev.keyCode === 13) {
+			ev.preventDefault();
+			onSendClick();
+		}
+	};
 
-		files.forEach((file) => {
-			firestore
-				.collection("messages")
-				.doc(profile.uid)
-				.update({ [Date.now()]: file });
-		});
+	const afterUpload = useCallback(
+		async (files) => {
+			setIsLoading(true);
 
-		setIsLoading(false);
-	});
+			files.forEach((file) => {
+				firestore
+					.collection("messages")
+					.doc(profile.uid)
+					.update({ [Date.now()]: { file } });
+			});
+
+			setIsLoading(false);
+		},
+		[profile.uid]
+	);
 
 	return (
 		<div>
@@ -69,7 +75,7 @@ const Bottom = () => {
 					onKeyDown={onKeyDown}
 				/>
 
-				<AttachmentBtnModal afterUpload={afterUpload} />
+				<AttachmentBtnModal afterUpload={afterUpload} UID={profile.uid} />
 				<InputGroup.Button
 					color="blue"
 					appearance="primary"

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Alert, Button, Icon, InputGroup, Modal, Uploader } from "rsuite";
 import { useModalState } from "../../../misc/custom-hooks";
-import { auth, storage } from "../../../misc/firebase";
+import { storage } from "../../../misc/firebase";
 
 const MAX_FILE_SIZE = 1000 * 1024 * 5;
 
-const AttachmentBtnModal = ({ afterUpload }) => {
+const AttachmentBtnModal = ({UID, afterUpload }) => {
 	const { isOpen, open, close } = useModalState();
 	const [isLoading, setIsLoading] = useState(false);
 	const [fileList, setFileList] = useState([]);
@@ -24,7 +24,7 @@ const AttachmentBtnModal = ({ afterUpload }) => {
 			// storage.ref(`/profile/${UID}/`).child("messages").child()
 			const uploadPromises = fileList.map((f) => {
 				return storage
-					.ref(`/profile/${auth.currentUser.uid}/`)
+					.ref(`/profile/${UID}/`)
 					.child(`${Date.now()}__${f.name}`)
 					.put(f.blobFile, {
 						cacheControl: `public, max-age=${3600 * 24 * 3}`,

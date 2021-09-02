@@ -4,7 +4,7 @@ import { Container, Content, Sidebar } from "rsuite";
 
 import Navbar from "../../components/Navbar";
 import Dashboard from "../../components/Dashboard";
-import Messages from "../../components/message-window";
+import Message from "../../components/message-window";
 import Settings from "../../components/Settings";
 
 const InvalidPage = () => {
@@ -24,10 +24,9 @@ const Home = () => {
 				<Navbar />
 			</Sidebar>
 			<Content>
-				
 				<Switch>
 					<Route exact path="/" component={Dashboard} />
-					<Route exact path="/messages" component={Messages} />
+						<Route exact path="/messages" component={Message} />
 					<Route exact path="/settings" component={Settings} />
 					<Route path="/" component={InvalidPage} />
 				</Switch>

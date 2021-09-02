@@ -1,5 +1,6 @@
 import React from "react";
-import { Avatar } from "rsuite";
+import { Icon } from "rsuite";
+import TimeAgo from "timeago-react";
 import { useHover } from "../../../misc/custom-hooks";
 import ImgBtnModal from "./ImgBtnModal";
 
@@ -13,37 +14,32 @@ import ImgBtnModal from "./ImgBtnModal";
 // )}
 
 const renderFileMessage = (file) => {
+	const name = file?.name?.split("__", 2)[1];
 	if (file.contentType.includes("image")) {
 		return (
-			<div className="height-220">
-				<ImgBtnModal src={file.url} fileName={file.name} />
+			<div>
+				<ImgBtnModal src={file.url} fileName={name} />
 			</div>
 		);
 	}
 
 	return (
-		<a href={file.url}>
-			Download {"=>"} {file.name}
-		</a>
+		<span>
+			Download <Icon icon="long-arrow-right" /> <a href={file.url}>{name}</a>
+		</span>
 	);
 };
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ time, message }) => {
 	const [selfRef, isHovered] = useHover();
 	return (
-		<li
-			className={`padded mb-1 cursor-pointer ${isHovered ? "bg-black-02" : ""}`}
-			ref={selfRef}
-		>
-			<div className="d-flex align-items-center font-bolder mb-1">
-				<Avatar
-					src={message.avatar}
-					name={message.name}
-					className="ml-1"
-					size="xs"
-				/>
-
-				{/* <TimeAgo /> */}
+		<li style={{ background: isHovered ? "rgba(0, 0, 0, 0.2)" : "" }} ref={selfRef}>
+			<div>
+				<TimeAgo datetime={time} />
+				<div>
+					{message?.text && <p>{message.text}</p>}
+					{message?.file && renderFileMessage(message.file)}
+				</div>
 			</div>
 		</li>
 	);

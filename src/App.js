@@ -13,7 +13,7 @@ function App() {
 			<Switch>
 				<PublicRoute path="/signin" />
 				<StudentProvider>
-					<PrivateRoute />
+						<PrivateRoute />
 				</StudentProvider>
 			</Switch>
 		</ProfileProvider>

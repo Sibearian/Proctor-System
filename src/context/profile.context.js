@@ -17,7 +17,7 @@ export const ProfileProvider = ({ children }) => {
 					if (!docSnapshot.exists || !docSnapshot.data()) {
 						setProfile(null);
 					} else {
-						setProfile({ ...docSnapshot.data() });
+						setProfile({ ...docSnapshot.data(), uid : auth.currentUser.uid });
 					}
 				});
 				setIsLoading(false);
