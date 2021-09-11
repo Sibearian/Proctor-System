@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "rsuite";
-import { useStudentDocs } from "../../../context/student.context";
-import { auth, firestore } from "../../../misc/firebase";
-import Card from "../Card";
+import { useStudentDocs } from "../../../../context/student.context";
+import { auth, firestore } from "../../../../misc/firebase";
+import Card from "../../Card";
 
 const AssignableStudentList = () => {
 	const {

@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Alert, Modal } from "rsuite";
 import { auth } from "../../misc/firebase";
 import ProfileForm from "../ProfileForm";
 
-const CreateUserBtn = () => {
-	const [show, setShow] = useState(true);
-
+const CreateUserBtn = ({ show, close }) => {
 	const onHide = async () => {
 		if (auth.currentUser) {
+			close();
 			await auth.currentUser.delete();
-			setShow(false);
-			Alert.warning("Account deleted")
+			Alert.warning("Account deleted");
 		}
 	};
 
@@ -21,7 +19,7 @@ const CreateUserBtn = () => {
 					<Modal.Title>Enter your details</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<ProfileForm profile={{}} />
+					<ProfileForm profile={{}} isNewUser />
 				</Modal.Body>
 			</Modal>
 		</div>

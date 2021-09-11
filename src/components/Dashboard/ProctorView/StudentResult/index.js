@@ -1,0 +1,147 @@
+import { mean } from "lodash";
+import React, { memo, useCallback, useState } from "react";
+import { Button, ButtonGroup } from "rsuite";
+import { useStudentDocs } from "../../../../context/student.context";
+import ResultTable from "./ResultTable";
+
+// sturcture the data in a way that tables can be read
+const restructureObject = (object) => {
+	const { student, ...subjects } = object;
+	const { name } = student;
+	// eslint-disable-next-line dot-notation
+
+	let merge = {};
+
+	Object.keys(subjects)
+		// Maps Ecah Subject to its table usable form
+		.map((subjectName) => {
+			// Labs
+			if (subjects[subjectName].isLab) {
+				return {
+					[`${subjectName}__isLab`]: true,
+					[`${subjectName}__FinalsMax`]: subjects[subjectName].finals.max,
+					[`${subjectName}__FinalsScored`]:
+						subjects[subjectName].finals?.scored,
+					[`${subjectName}__AssignmentMax`]:
+						subjects[subjectName].assignment.max,
+					[`${subjectName}__AssignmentScored`]:
+						subjects[subjectName].assignment?.scored,
+					[`${subjectName}__InternalsMax`]: subjects[subjectName].internals.max,
+					[`${subjectName}__InternalsAvg`]:
+						subjects[subjectName].internals.internals1 +
+							subjects[subjectName].internals.internals2 / 2 ===
+						0
+							? "Not available"
+							: mean([
+									subjects[subjectName].internals.internals1,
+									subjects[subjectName].internals.internals2,
+							  ]),
+
+					[`${subjectName}__Internals1`]:
+						subjects[subjectName].internals.internals1,
+					[`${subjectName}__Internals2`]:
+						subjects[subjectName].internals.internals2,
+				};
+			}
+
+			// Theory
+			return {
+				[`${subjectName}__isLab`]: false,
+				[`${subjectName}__FinalsMax`]: subjects[subjectName].finals.max,
+				[`${subjectName}__FinalsScored`]: subjects[subjectName].finals?.scored,
+				[`${subjectName}__AssignmentMax`]: subjects[subjectName].assignment.max,
+				[`${subjectName}__AssignmentScored`]:
+					subjects[subjectName].assignment?.scored,
+				[`${subjectName}__InternalsMax`]: subjects[subjectName].internals.max,
+				[`${subjectName}__InternalsAvg`]:
+					(subjects[subjectName].internals.internals1 +
+						subjects[subjectName].internals.internals2 +
+						subjects[subjectName].internals.internals3) /
+						3 ===
+					0
+						? "Not available"
+						: mean([
+							subjects[subjectName].internals.internals1,
+							subjects[subjectName].internals.internals2,
+							subjects[subjectName].internals.internals3,
+						]),
+				[`${subjectName}__Internals1`]:
+					subjects[subjectName].internals.internals1,
+				[`${subjectName}__Internals2`]:
+					subjects[subjectName].internals.internals2,
+				[`${subjectName}__Internals3`]:
+					subjects[subjectName].internals.internals3,
+			};
+		})
+		.forEach((result) => {
+			merge = Object.assign(merge, result);
+		});
+
+	return { name, ...merge, student };
+};
+
+//
+// Filter the data according to the semester
+
+//
+//
+const StudentResults = () => {
+	const {
+		results: { data: resultsNonSterilisedData },
+	} = useStudentDocs();
+
+	const date = new Date();
+	const [year, month] = [
+		date.getFullYear(),
+		date.getMonth() > 5 && date.getMonth() < 10 ? 1 : 2,
+	];
+
+	const structureObject = useCallback(
+		(obj, semester) =>
+			obj
+				.filter((result) => result.semester === semester)
+				.map((result) => result.result)
+				.map((result) => restructureObject(result)),
+		[]
+	);
+
+	const tempResults = resultsNonSterilisedData.map((results) => {
+		const { semester, ...res } = results.results[year][month];
+		return {
+			result: { student: results.student, ...res },
+			semester,
+		};
+	});
+
+	const resultsData = [
+		structureObject(tempResults, 1),
+		structureObject(tempResults, 2),
+		structureObject(tempResults, 3),
+		structureObject(tempResults, 4),
+		structureObject(tempResults, 5),
+		structureObject(tempResults, 6),
+	];
+
+	const [result, setResult] = useState(resultsData[0]);
+
+	const onClick = useCallback((semester) => {
+		setResult(resultsData[semester - 1]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return (
+		<div>
+			<ButtonGroup>
+				<Button onClick={() => onClick(1)}>1</Button>
+				<Button onClick={() => onClick(2)}>2</Button>
+				<Button onClick={() => onClick(3)}>3</Button>
+				<Button onClick={() => onClick(4)}>4</Button>
+				<Button onClick={() => onClick(5)}>5</Button>
+				<Button onClick={() => onClick(6)}>6</Button>
+			</ButtonGroup>
+			<ResultTable results={result} />
+		</div>
+	);
+};
+
+export default memo(StudentResults);

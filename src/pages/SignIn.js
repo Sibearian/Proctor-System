@@ -20,11 +20,14 @@ import {
 
 import { auth } from "../misc/firebase";
 import CreateUserBtn from "../components/CreateUserBtn";
+import { useModalState } from "../misc/custom-hooks";
 
 const SignIn = () => {
 	const [formValue, setFormValue] = useState({});
 	const [newUID, setNewUID] = useState(null);
 	const [loading, setLoading] = useState(false);
+
+	const { isOpen, open, close } = useModalState();
 
 	const onFormChange = useCallback((value) => {
 		setFormValue(value);
@@ -70,6 +73,8 @@ const SignIn = () => {
 			setLoading(false);
 			Alert.error("Please enter valid details", 4000);
 		}
+
+		open();
 	};
 
 	if (loading) {
@@ -132,7 +137,7 @@ const SignIn = () => {
 					</Row>
 				</Grid>
 			</Container>
-			{newUID && <CreateUserBtn />}
+			{newUID && <CreateUserBtn show={isOpen} close={close} />}
 		</div>
 	);
 };

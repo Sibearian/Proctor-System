@@ -17,13 +17,19 @@ import {
 	INITIAL_VALUE,
 	model,
 	semesters,
+	subjects,
 } from "../../misc/form.helper";
 import AvatarUploadBtn from "./AvatarUploadBtn";
 
-const ProfileForm = ({ profile }) => {
+const ProfileForm = ({ profile, isNewUser }) => {
 	const [formValue, setFormValue] = useState(INITIAL_VALUE || profile);
 	const [isUploading, setIsUploading] = useState(false);
 	const { uid, photoURL, displayName, email } = auth.currentUser || {};
+	const date = new Date();
+	const [year, month] = [
+		date.getFullYear(),
+		date.getMonth() > 5 && date.getMonth() < 10 ? 1 : 2,
+	];
 
 	const formRef = useRef();
 
@@ -50,7 +56,9 @@ const ProfileForm = ({ profile }) => {
 		const newUserData = {
 			...formValue,
 			student_of: "not_assigned",
-			avatar: photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+			avatar:
+				photoURL ||
+				"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
 			email,
 		};
 
@@ -67,8 +75,38 @@ const ProfileForm = ({ profile }) => {
 			.finally(() => {
 				setFormValue(INITIAL_VALUE);
 				setIsUploading(false);
-				window.location.reload(false);
+				window.location.reload();
 			});
+
+		const { semester: sem, branch } = formValue;
+		const data = subjects[branch][sem];
+
+		if (isNewUser) {
+			firestore
+				.collection("results")
+				.doc(String(uid))
+				.set({
+					uid,
+					[year]: {
+						[month]: {
+							semester: sem,
+							...data,
+						},
+					},
+				});
+		} else {
+			firestore
+				.collection("results")
+				.doc(String(uid))
+				.update({
+					[year]: {
+						[month]: {
+							semester: sem,
+							...data,
+						},
+					},
+				});
+		}
 	};
 	return (
 		<Container>

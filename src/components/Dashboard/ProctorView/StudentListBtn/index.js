@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "rsuite";
-import { useStudentDocs } from "../../../context/student.context";
-import Card from "../Card";
-import StudentModal from "./StudentModal";
+import { useStudentDocs } from "../../../../context/student.context";
+import Card from "../../Card";
+import StudentModal from "../StudentModal";
 
 const StudentListBtn = () => {
 	const {
