@@ -161,6 +161,7 @@ const EditResultModal = ({ rowData, close }) => {
 		}
 		firestore.collection("results").doc(student.uid).update(uploadData);
 		Alert.info("Result is updated");
+		close()
 		setIsLoading(false);
 	};
 

@@ -1,5 +1,5 @@
 import { mean } from "lodash";
-import React, { memo, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, ButtonGroup } from "rsuite";
 import { useStudentDocs } from "../../../../context/student.context";
 import ResultTable from "./ResultTable";
@@ -61,10 +61,10 @@ const restructureObject = (object) => {
 					0
 						? "Not available"
 						: mean([
-							subjects[subjectName].internals.internals1,
-							subjects[subjectName].internals.internals2,
-							subjects[subjectName].internals.internals3,
-						]),
+								subjects[subjectName].internals.internals1,
+								subjects[subjectName].internals.internals2,
+								subjects[subjectName].internals.internals3,
+						  ]),
 				[`${subjectName}__Internals1`]:
 					subjects[subjectName].internals.internals1,
 				[`${subjectName}__Internals2`]:
@@ -80,11 +80,7 @@ const restructureObject = (object) => {
 	return { name, ...merge, student };
 };
 
-//
-// Filter the data according to the semester
-
-//
-//
+// Component
 const StudentResults = () => {
 	const {
 		results: { data: resultsNonSterilisedData },
@@ -96,6 +92,7 @@ const StudentResults = () => {
 		date.getMonth() > 5 && date.getMonth() < 10 ? 1 : 2,
 	];
 
+	// Filters the data according to the semester
 	const structureObject = useCallback(
 		(obj, semester) =>
 			obj
@@ -144,4 +141,4 @@ const StudentResults = () => {
 	);
 };
 
-export default memo(StudentResults);
+export default StudentResults;

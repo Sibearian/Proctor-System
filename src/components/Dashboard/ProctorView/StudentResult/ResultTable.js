@@ -20,7 +20,8 @@ const getNames = (data = {}) => {
 };
 
 const ResultTable = ({ results }) => {
-	useEffect(() => {}, [results]);
+	const reload = Object.keys(results).length;
+	useEffect(() => {}, [reload]);
 	const names = getNames(results[0]);
 	const [rowData, setRowData] = useState(null);
 
