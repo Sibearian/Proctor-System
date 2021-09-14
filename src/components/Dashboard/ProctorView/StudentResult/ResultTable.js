@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-curly-brace-presence */
 import React, { useCallback, useEffect, useState } from "react";
 import { Table } from "rsuite";
 import EditResultModal from "./EditResultModal";
@@ -28,7 +27,7 @@ const ResultTable = ({ results }) => {
 	const onRowClick = useCallback((data) => setRowData(data), []);
 
 	return (
-		<div>
+		<>
 			<Table
 				data={results}
 				bordered
@@ -64,7 +63,7 @@ const ResultTable = ({ results }) => {
 			{rowData && (
 				<EditResultModal rowData={rowData} close={() => setRowData(null)} />
 			)}
-		</div>
+		</>
 	);
 };
 

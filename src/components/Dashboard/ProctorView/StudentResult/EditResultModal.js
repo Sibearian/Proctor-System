@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 import {
 	Alert,
-	Avatar,
 	Button,
 	ControlLabel,
 	Divider,
@@ -161,24 +161,40 @@ const EditResultModal = ({ rowData, close }) => {
 		}
 		firestore.collection("results").doc(student.uid).update(uploadData);
 		Alert.info("Result is updated");
-		close()
+		close();
 		setIsLoading(false);
 	};
 
 	return (
 		<Modal show={!!rowData} onHide={close}>
 			<Header>
-				<Title>{rowData.name}</Title>
+				<Title>
+					<Button
+						appearance="link"
+						componentClass={Link}
+						to={`/student/${student.uid}`}
+					>
+						<h4>{rowData.name}</h4>
+					</Button>
+				</Title>
 			</Header>
 			<Body>
-				<Panel>
-					<Avatar src={student.avatar} />
-					<p>
-						<small>Registration Number : </small> {student.registration_number}
-					</p>
-					<p>
-						<small>Semester : </small> {student.semester}
-					</p>
+				<Panel shaded bordered>
+					<img
+						alt={student.name}
+						src={student.avatar}
+						height={260}
+						width={260}
+					/>
+					<Panel>
+						<p>
+							<small>Registration Number : </small>{" "}
+							{student.registration_number}
+						</p>
+						<p>
+							<small>Semester : </small> {student.semester}
+						</p>
+					</Panel>
 				</Panel>
 				<Form onChange={onFormChange} formValue={formValue}>
 					{data.map((subject, subKey) => {

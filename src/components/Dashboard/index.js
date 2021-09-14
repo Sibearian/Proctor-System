@@ -11,7 +11,6 @@ const Dashboard = () => {
 			{profile.student_of !== false ? (
 				<StudentView profile={profile} />
 			) : (
-				
 				<ProctorView />
 			)}
 		</div>

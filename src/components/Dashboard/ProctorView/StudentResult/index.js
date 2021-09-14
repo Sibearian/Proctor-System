@@ -1,6 +1,7 @@
 import { mean } from "lodash";
 import React, { useCallback, useState } from "react";
-import { Button, ButtonGroup } from "rsuite";
+import {Bar} from "react-chartjs-2"
+import { Button, ButtonGroup, Panel, PanelGroup } from "rsuite";
 import { useStudentDocs } from "../../../../context/student.context";
 import ResultTable from "./ResultTable";
 
@@ -136,7 +137,12 @@ const StudentResults = () => {
 				<Button onClick={() => onClick(5)}>5</Button>
 				<Button onClick={() => onClick(6)}>6</Button>
 			</ButtonGroup>
-			<ResultTable results={result} />
+			<PanelGroup bordered>
+				<Panel>
+					<ResultTable results={result} />
+				</Panel>
+			</PanelGroup>
+			<Bar />
 		</div>
 	);
 };

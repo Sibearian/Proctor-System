@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import Dashboard from "../../components/Dashboard";
 import Message from "../../components/message-window";
 import Settings from "../../components/Settings";
+import StudentPage from "../../components/StudentPage";
 
 const InvalidPage = () => {
 	return (
@@ -26,8 +27,9 @@ const Home = () => {
 			<Content>
 				<Switch>
 					<Route exact path="/" component={Dashboard} />
-						<Route exact path="/messages" component={Message} />
+					<Route exact path="/messages" component={Message} />
 					<Route exact path="/settings" component={Settings} />
+					<Route exact path="/student/:id" component={StudentPage} />
 					<Route path="/" component={InvalidPage} />
 				</Switch>
 			</Content>

@@ -51,6 +51,8 @@ const SignIn = () => {
 			setLoading(false);
 			Alert.error(error.message, 4000);
 		}
+
+		open();
 	};
 
 	const onSignInWithEmail = async () => {
