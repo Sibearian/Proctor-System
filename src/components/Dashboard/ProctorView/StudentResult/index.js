@@ -1,8 +1,8 @@
-import { mean } from "lodash";
+import { floor, mean } from "lodash";
 import React, { useCallback, useState } from "react";
-import {Bar} from "react-chartjs-2"
 import { Button, ButtonGroup, Panel, PanelGroup } from "rsuite";
 import { useStudentDocs } from "../../../../context/student.context";
+import Chart from "./Chart";
 import ResultTable from "./ResultTable";
 
 // sturcture the data in a way that tables can be read
@@ -33,10 +33,13 @@ const restructureObject = (object) => {
 							subjects[subjectName].internals.internals2 / 2 ===
 						0
 							? "Not available"
-							: mean([
-									subjects[subjectName].internals.internals1,
-									subjects[subjectName].internals.internals2,
-							  ]),
+							: floor(
+									mean([
+										subjects[subjectName].internals.internals1,
+										subjects[subjectName].internals.internals2,
+									]),
+									2
+							  ),
 
 					[`${subjectName}__Internals1`]:
 						subjects[subjectName].internals.internals1,
@@ -61,11 +64,14 @@ const restructureObject = (object) => {
 						3 ===
 					0
 						? "Not available"
-						: mean([
-								subjects[subjectName].internals.internals1,
-								subjects[subjectName].internals.internals2,
-								subjects[subjectName].internals.internals3,
-						  ]),
+						: floor(
+								mean([
+									subjects[subjectName].internals.internals1,
+									subjects[subjectName].internals.internals2,
+									subjects[subjectName].internals.internals3,
+								]),
+								2
+						  ),
 				[`${subjectName}__Internals1`]:
 					subjects[subjectName].internals.internals1,
 				[`${subjectName}__Internals2`]:
@@ -139,10 +145,12 @@ const StudentResults = () => {
 			</ButtonGroup>
 			<PanelGroup bordered>
 				<Panel>
+					<Chart data={result} />
+				</Panel>
+				<Panel>
 					<ResultTable results={result} />
 				</Panel>
 			</PanelGroup>
-			<Bar />
 		</div>
 	);
 };

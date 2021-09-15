@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { Container, Panel, PanelGroup, Table, Divider } from "rsuite";
 
 import { firestore } from "../../misc/firebase";
+import Chart from "./chart";
 
 const { Cell, HeaderCell, Column } = Table;
 
@@ -134,44 +135,51 @@ const StudentPage = () => {
 												(semester === "1" ? " Odd Semester" : " Even Semester")
 											}
 										>
-											<Table data={data} autoHeight>
-												<Column>
-													<HeaderCell>Subject Name</HeaderCell>
-													<Cell dataKey="name" />
-												</Column>
-												<Column>
-													<HeaderCell>Subject Is</HeaderCell>
-													<Cell>
-														{(rowData) =>
-															rowData.lab ? "Practicals" : "Theory"
-														}
-													</Cell>
-												</Column>
-												<Column>
-													<HeaderCell>Assignment</HeaderCell>
-													<Cell dataKey="assignmentScored" />
-												</Column>
-												<Column>
-													<HeaderCell>IA 1</HeaderCell>
-													<Cell dataKey="internal1" />
-												</Column>
-												<Column>
-													<HeaderCell>IA 2</HeaderCell>
-													<Cell dataKey="internal2" />
-												</Column>
-												<Column>
-													<HeaderCell>IA 3</HeaderCell>
-													<Cell dataKey="internal3" />
-												</Column>
-												<Column>
-													<HeaderCell>Final Marks</HeaderCell>
-													<Cell dataKey="finalsScored" />
-												</Column>
-												<Column>
-													<HeaderCell>Passed</HeaderCell>
-													<Cell dataKey="hasPassed" />
-												</Column>
-											</Table>
+											<PanelGroup accordion>
+												<Panel header="Table" defaultExpanded>
+													<Table data={data} autoHeight>
+														<Column>
+															<HeaderCell>Subject Name</HeaderCell>
+															<Cell dataKey="name" />
+														</Column>
+														<Column>
+															<HeaderCell>Subject Is</HeaderCell>
+															<Cell>
+																{(rowData) =>
+																	rowData.lab ? "Practicals" : "Theory"
+																}
+															</Cell>
+														</Column>
+														<Column>
+															<HeaderCell>Assignment</HeaderCell>
+															<Cell dataKey="assignmentScored" />
+														</Column>
+														<Column>
+															<HeaderCell>IA 1</HeaderCell>
+															<Cell dataKey="internal1" />
+														</Column>
+														<Column>
+															<HeaderCell>IA 2</HeaderCell>
+															<Cell dataKey="internal2" />
+														</Column>
+														<Column>
+															<HeaderCell>IA 3</HeaderCell>
+															<Cell dataKey="internal3" />
+														</Column>
+														<Column>
+															<HeaderCell>Final Marks</HeaderCell>
+															<Cell dataKey="finalsScored" />
+														</Column>
+														<Column>
+															<HeaderCell>Passed</HeaderCell>
+															<Cell dataKey="hasPassed" />
+														</Column>
+													</Table>
+												</Panel>
+												<Panel header="Chart">
+													<Chart data={data} />
+												</Panel>
+											</PanelGroup>
 										</Panel>
 									);
 								})
