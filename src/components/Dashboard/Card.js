@@ -5,10 +5,10 @@ const Card = ({ profile, children }) => {
 	return (
 		<Container
 			style={{
-				maxWidth: 500,
 				marginBottom: 10,
 				backgroundColor: "#DDDDDD",
 				borderRadius: 15,
+				width: 400
 			}}
 		>
 			<Sidebar width={50} style={{ paddingLeft: 5, alignSelf: "center" }}>
@@ -21,16 +21,7 @@ const Card = ({ profile, children }) => {
 						color: "#000000",
 					}}
 					alt={profile.name}
-				>
-					{String(profile.name)
-						.split(" ")
-						.map((word, index) => {
-							if (index < 2) {
-								return word[0];
-							}
-							return "";
-						})}
-				</Avatar>
+				/>
 			</Sidebar>
 			<Container>
 				<Header style={{ alignSelf: "center", marginBottom: 10 }}>
@@ -47,6 +38,7 @@ const Card = ({ profile, children }) => {
 				style={{
 					borderEndEndRadius: 15,
 					borderTopRightRadius: 15,
+					display: "grid",
 				}}
 			>
 				{children}

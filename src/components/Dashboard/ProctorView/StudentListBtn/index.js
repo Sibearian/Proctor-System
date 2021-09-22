@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button } from "rsuite";
+import { Button, Divider, FlexboxGrid } from "rsuite";
 import { useStudentDocs } from "../../../../context/student.context";
 import Card from "../../Card";
 import StudentModal from "../StudentModal";
 
 const StudentListBtn = () => {
 	const {
-		studentDocs: { isLoading, data },
+		studentDocs: { data },
 	} = useStudentDocs();
 
 	const [isOpen, setIsOpen] = useState(null);
-	const [visible, setVisible] = useState(false);
 	const [list, setList] = useState(null);
 
 	const onView = useCallback((student) => setIsOpen(student), []);
@@ -21,6 +20,7 @@ const StudentListBtn = () => {
 			data.map((student, index) => {
 				return (
 					<Button
+						style={{ textDecoration: "none", color: "black" }}
 						key={index}
 						appearance="link"
 						onClick={() => {
@@ -32,28 +32,17 @@ const StudentListBtn = () => {
 				);
 			})
 		);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.length]);
 
-	const onClick = useCallback(() => {
-		setVisible(!visible);
-	}, [visible]);
-
 	return (
-		<div>
-			<Button active={!isLoading} loading={isLoading} onClick={onClick}>
-				{visible ? "Hide Students" : "Show Students"}
-			</Button>
-			{visible ? (
-				<>
-					<hr />
-					{list}
-				</>
-			) : null}
+		<>
+			<Divider style={{ margin: 20 }}>Students</Divider>
+			<FlexboxGrid justify="start">{list}</FlexboxGrid>
 			{isOpen && (
 				<StudentModal close={() => setIsOpen(null)} student={isOpen} />
 			)}
-		</div>
+		</>
 	);
 };
 

@@ -27,7 +27,7 @@ const ResultTable = ({ results }) => {
 	const onRowClick = useCallback((data) => setRowData(data), []);
 
 	return (
-		<>
+		<div>
 			<Table
 				data={results}
 				bordered
@@ -36,34 +36,37 @@ const ResultTable = ({ results }) => {
 				affixHeader
 				headerHeight={80}
 				autoHeight
+				wordWrap={false}
 				sortColumn="name"
 				onRowClick={(data) => onRowClick(data)}
 			>
-				<Column>
+				<Column fixed width={200}>
 					<HeaderCell>Name</HeaderCell>
 					<Cell dataKey="name" />
 				</Column>
-				{names.map((subjectName, key) => (
-					<ColumnGroup header={subjectName} key={key}>
-						<Column>
-							<HeaderCell>Assignment</HeaderCell>
-							<Cell dataKey={`${subjectName}__AssignmentScored`} />
-						</Column>
-						<Column colSpan={2}>
-							<HeaderCell>Internals Average</HeaderCell>
-							<Cell dataKey={`${subjectName}__InternalsAvg`} />
-						</Column>
-						<Column colSpan={2}>
-							<HeaderCell>Finals</HeaderCell>
-							<Cell dataKey={`${subjectName}__FinalsScored`} />
-						</Column>
-					</ColumnGroup>
-				))}
+				{names.map((subjectName, key) => {
+					return (
+						<ColumnGroup header={subjectName} key={key}>
+							<Column>
+								<HeaderCell>Assignment</HeaderCell>
+								<Cell dataKey={`${subjectName}__AssignmentScored`} />
+							</Column>
+							<Column>
+								<HeaderCell>Internals Average</HeaderCell>
+								<Cell dataKey={`${subjectName}__InternalsAvg`} />
+							</Column>
+							<Column>
+								<HeaderCell>Finals</HeaderCell>
+								<Cell dataKey={`${subjectName}__FinalsScored`} />
+							</Column>
+						</ColumnGroup>
+					);
+				})}
 			</Table>
 			{rowData && (
 				<EditResultModal rowData={rowData} close={() => setRowData(null)} />
 			)}
-		</>
+		</div>
 	);
 };
 

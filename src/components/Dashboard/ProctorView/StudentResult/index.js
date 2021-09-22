@@ -1,6 +1,6 @@
 import { floor, mean } from "lodash";
 import React, { useCallback, useState } from "react";
-import { Button, ButtonGroup, Panel, PanelGroup } from "rsuite";
+import { Button, ButtonGroup, Divider, Panel } from "rsuite";
 import { useStudentDocs } from "../../../../context/student.context";
 import Chart from "./Chart";
 import ResultTable from "./ResultTable";
@@ -134,24 +134,31 @@ const StudentResults = () => {
 	}, []);
 
 	return (
-		<div>
-			<ButtonGroup>
-				<Button onClick={() => onClick(1)}>1</Button>
-				<Button onClick={() => onClick(2)}>2</Button>
-				<Button onClick={() => onClick(3)}>3</Button>
-				<Button onClick={() => onClick(4)}>4</Button>
-				<Button onClick={() => onClick(5)}>5</Button>
-				<Button onClick={() => onClick(6)}>6</Button>
-			</ButtonGroup>
-			<PanelGroup bordered>
-				<Panel>
-					<Chart data={result} />
-				</Panel>
-				<Panel>
+		<>
+		<Divider style={{margin: 20}}>Results</Divider>
+				<ButtonGroup block>
+					<Button onClick={() => onClick(1)}>Semester 1</Button>
+					<Button onClick={() => onClick(2)}>Semester 2</Button>
+					<Button onClick={() => onClick(3)}>Semester 3</Button>
+					<Button onClick={() => onClick(4)}>Semester 4</Button>
+					<Button onClick={() => onClick(5)}>Semester 5</Button>
+					<Button onClick={() => onClick(6)}>Semester 6</Button>
+				</ButtonGroup>
+			{result.length === 0 ? (
+				<Panel header="Results">
 					<ResultTable results={result} />
 				</Panel>
-			</PanelGroup>
-		</div>
+			) : (
+				<>
+					<Panel header="Results">
+						<ResultTable results={result} />
+					</Panel>
+					<Panel header="Class Average Chart" collapsible>
+						<Chart data={result} />
+					</Panel>
+				</>
+			)}
+		</>
 	);
 };
 

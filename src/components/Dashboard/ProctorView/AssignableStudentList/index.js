@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button } from "rsuite";
+import { Link } from "react-router-dom";
+import { Button, Divider, FlexboxGrid, Loader } from "rsuite";
+import FlexboxGridItem from "rsuite/lib/FlexboxGrid/FlexboxGridItem";
+import PlaceholderParagraphProps from "rsuite/lib/Placeholder/PlaceholderParagraph";
 import { useStudentDocs } from "../../../../context/student.context";
 import { auth, firestore } from "../../../../misc/firebase";
 import Card from "../../Card";
@@ -9,8 +12,7 @@ const AssignableStudentList = () => {
 		assignableStudentDocs: { data, isLoading },
 	} = useStudentDocs();
 
-	const [visible, setVisible] = useState(false);
-	const [list, setList] = useState(null);
+	const [list, setList] = useState([]);
 
 	const onAdd = useCallback((student) => {
 		firestore
@@ -24,30 +26,42 @@ const AssignableStudentList = () => {
 		setList(
 			data.map((student, index) => {
 				return (
-					<Card profile={student} key={index}>
-						<Button onClick={() => onAdd(student)}>Add</Button>
-					</Card>
+					<FlexboxGridItem order={index}>
+						<Button
+							style={{ textDecoration: "none", color: "black" }}
+							key={index}
+							appearance="link"
+							componentClass={Link}
+							size="sm"
+							to={`/student/${student.uid}`}
+						>
+							<Card profile={student} key={index}>
+								<Button appearance="subtle" onClick={() => onAdd(student)}>
+									Add
+								</Button>
+							</Card>
+						</Button>
+					</FlexboxGridItem>
 				);
 			})
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.length]);
 
-	const onClick = useCallback(() => {
-		setVisible(!visible);
-	}, [visible]);
+	if (isLoading) {
+		return (
+			<PlaceholderParagraphProps rows={2}>
+				<Loader center content="loading" />
+			</PlaceholderParagraphProps>
+		);
+	}
 
 	return (
 		<>
-			<Button active={!isLoading} loading={isLoading} onClick={onClick}>
-				{visible ? "Hide Students" : "Show Students"}
-			</Button>
-			{visible ? (
-				<>
-					<hr />
-					{list.length === 0 ? <p>All students are assigned</p> : list}
-				</>
-			) : null}
+			<Divider style={{ margin: 20 }}>Assignable Students</Divider>
+			<FlexboxGrid justify="start">
+				{list.length === 0 ? <p>All students are assigned</p> : list}
+			</FlexboxGrid>
 		</>
 	);
 };

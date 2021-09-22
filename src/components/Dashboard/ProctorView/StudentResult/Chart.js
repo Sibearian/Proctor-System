@@ -97,6 +97,7 @@ const Chart = ({ data }) => {
 		},
 		{
 			label: "Finals",
+			hidden: true,
 			data: perSubFinals,
 			backgroundColor: finalsDataColor,
 			borderWidth: 1,
@@ -104,19 +105,22 @@ const Chart = ({ data }) => {
 	];
 
 	return (
-		<Bar
-			data={{
-				labels: subNames,
-				datasets: dataSets,
-				options: {
-					scales: {
-						y: {
-							beginAtZero: true,
+		<div >
+			<Bar style={{height: 250}}
+				data={{
+					labels: subNames,
+					datasets: dataSets,
+					options: {
+						maintainAspectRatio: false,
+						scales: {
+							y: {
+								beginAtZero: true,
+							},
 						},
 					},
-				},
-			}}
-		/>
+				}}
+			/>
+		</div>
 	);
 };
 
