@@ -1,5 +1,4 @@
 import React from "react";
-import { Container, Content, Footer, Header } from "rsuite";
 import { MessageProvider } from "../../context/message.context";
 import { useProfile } from "../../context/profile.context";
 import Bottom from "./bottom";
@@ -10,15 +9,19 @@ const Message = () => {
 	const { profile } = useProfile();
 	return (
 		<MessageProvider>
-			<Container>
-				<Header>
-					<MessageTop />
-				</Header>
-				<Content>
-					<Messages />
-				</Content>
-				<Footer>{!profile.student_of && <Bottom />}</Footer>
-			</Container>
+			<div
+				className="chat-top"
+			>
+				<MessageTop />
+			</div>
+			<div className="chat-middle">
+				<Messages />
+			</div>
+			<div
+				className="chat-bottom"
+			>
+				{!profile.student_of && <Bottom />}
+			</div>
 		</MessageProvider>
 	);
 };

@@ -11,7 +11,7 @@ const ProctorView = () => {
 		assignableStudentDocs: { isLoading },
 	} = useStudentDocs();
 
-	const [show, setShow] = useState(null);
+	const [show, setShow] = useState(<StudentListBtn />);
 
 	const onClick = useCallback((value) => {
 		setShow([value]);
@@ -27,27 +27,6 @@ const ProctorView = () => {
 				</Button>
 			</ButtonGroup>
 			{show}
-
-			{/* <Button active={!isLoading} loading={isLoading} onClick={() => {}}>
-				{show ? "Hide Students" : "Show Students"}
-			</Button>
-			<StudentListBtn />
-			
-			<div>
-				<Button
-					active={!isLoading}
-					loading={isLoading}
-					onClick={() => {}}
-				>
-					{show ? "Hide" : "Show"} Results
-				</Button>
-				{show && (
-					<>
-						<Divider style={{margin: 20}}>Results</Divider>
-						<StudentResults />
-					</>					
-			)} 
-		</div> */}
 		</>
 	);
 };

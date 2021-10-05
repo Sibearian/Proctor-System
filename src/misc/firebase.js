@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-const config = {
+export const config = {
   apiKey: "AIzaSyC4hTkNgv_a8xnRBGQHWkV3Q33CprfTMvI",
   authDomain: "proctor-system-project.firebaseapp.com",
   projectId: "proctor-system-project",

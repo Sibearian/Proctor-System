@@ -6,7 +6,7 @@ import StudentView from "./StudentView";
 const Dashboard = () => {
 	const { profile } = useProfile();
 	return (
-		<div>
+		<div className="msg-list custom-scroll">
 			<h3>Dashboard</h3>
 			{profile.student_of !== false ? (
 				<StudentView profile={profile} />

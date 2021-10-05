@@ -5,7 +5,11 @@ import ProfileForm from "../ProfileForm";
 const Settings = () => {
 	const { profile } = useProfile();
 
-	return <ProfileForm profile={profile} />;
+	return (
+		<div className="msg-list custom-scroll">
+			<ProfileForm profile={profile} />
+		</div>
+	);
 };
 
 export default Settings;

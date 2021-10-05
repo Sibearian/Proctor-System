@@ -76,12 +76,13 @@ const AvatarUploadBtn = () => {
 
 	return (
 		<>
-			<label htmlFor="avatar-upload">
+			<label htmlFor="avatar-upload" className="d-block cursor-pointer padded">
 				Select new avatar
 				<input
 					accept={fileInputTypes}
 					id="avatar-upload"
 					type="file"
+					className="d-none"
 					onChange={onFileInputChange}
 				/>
 			</label>

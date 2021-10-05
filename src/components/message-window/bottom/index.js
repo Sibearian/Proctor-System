@@ -67,7 +67,7 @@ const Bottom = () => {
 
 	return (
 		<div>
-			<InputGroup>
+			<InputGroup style={{ width: "99%" }}>
 				<Input
 					placeholder="Write a new message here..."
 					value={input}

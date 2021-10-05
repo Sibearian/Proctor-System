@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Container, Panel, PanelGroup, Table, Divider } from "rsuite";
 
-import { firestore } from "../../misc/firebase";
+import { firestore, config } from "../../misc/firebase";
 import Chart from "./chart";
 
 const { Cell, HeaderCell, Column } = Table;
@@ -73,6 +73,10 @@ const StudentPage = () => {
 				let { uid, ...data } = result.data();
 				setResults(data);
 			});
+
+		/* eslint-disable no-console */
+		console.log(config);
+		/* eslint-enable no-console */
 
 		return () => {
 			unSubResults();

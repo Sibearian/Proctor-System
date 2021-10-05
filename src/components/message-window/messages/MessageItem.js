@@ -1,23 +1,14 @@
-import React from "react";
+import React, { memo } from "react";
 import { Icon } from "rsuite";
 import TimeAgo from "timeago-react";
 import { useHover } from "../../../misc/custom-hooks";
 import ImgBtnModal from "./ImgBtnModal";
 
-// {isAuthor && (
-// 	<IconBtnControl
-// 		isVisible={canShowIcons}
-// 		iconName="close"
-// 		tooltip="Delete this message"
-// 		onClick={() => handleDelete(message.id, file)}
-// 	/>
-// )}
-
 const renderFileMessage = (file) => {
 	const name = file?.name?.split("__", 2)[1];
 	if (file.contentType.includes("image")) {
 		return (
-			<div>
+			<div className="img-fullsize">
 				<ImgBtnModal src={file.url} fileName={name} />
 			</div>
 		);
@@ -33,11 +24,18 @@ const renderFileMessage = (file) => {
 const MessageItem = ({ time, message }) => {
 	const [selfRef, isHovered] = useHover();
 	return (
-		<li style={{ background: isHovered ? "rgba(0, 0, 0, 0.2)" : "" }} ref={selfRef}>
-			<div>
-				<TimeAgo datetime={time} />
+		<li
+			ref={selfRef}
+			className={`padded mb-1 cursor-pointer ${isHovered ? "bg-black-02" : ""}`}
+		>
+			<div className="font-bolder mb-1">
 				<div>
-					{message?.text && <p>{message.text}</p>}
+					<TimeAgo datetime={time} className="font-normal text-black-45 " />
+				</div>
+				<div className="ml-2">
+					{message?.text && (
+						<span className="word-breal-all">{message.text}</span>
+					)}
 					{message?.file && renderFileMessage(message.file)}
 				</div>
 			</div>
@@ -45,4 +43,4 @@ const MessageItem = ({ time, message }) => {
 	);
 };
 
-export default MessageItem;
+export default memo(MessageItem);

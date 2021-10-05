@@ -2,11 +2,11 @@ import React from "react";
 import { Route, Switch } from "react-router";
 import { Container, Content, Sidebar } from "rsuite";
 
-import Navbar from "../../components/Navbar";
-import Dashboard from "../../components/Dashboard";
-import Message from "../../components/message-window";
-import Settings from "../../components/Settings";
-import StudentPage from "../../components/StudentPage";
+import Navbar from "../components/Navbar";
+import Dashboard from "../components/Dashboard";
+import Message from "../components/message-window";
+import Settings from "../components/Settings";
+import StudentPage from "../components/StudentPage";
 
 const InvalidPage = () => {
 	return (

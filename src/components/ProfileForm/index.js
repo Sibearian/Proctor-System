@@ -6,7 +6,9 @@ import {
 	Content,
 	ControlLabel,
 	Footer,
+	Header,
 	Form,
+	Divider,
 	FormControl,
 	FormGroup,
 	SelectPicker,
@@ -109,10 +111,15 @@ const ProfileForm = ({ profile, isNewUser }) => {
 		}
 	};
 	return (
-		<Container>
+		<Container className="justify-content-between">
+			<Header>
+				<h4>Settings</h4>
+			</Header>
+			<Divider />
 			<Content>
 				<Form
-					layout="horizontal"
+					className="align-items-center"
+					layout="vertical"
 					ref={formRef}
 					model={model}
 					onChange={onFormChange}
@@ -120,17 +127,29 @@ const ProfileForm = ({ profile, isNewUser }) => {
 				>
 					<FormGroup>
 						<ControlLabel>Name :</ControlLabel>
-						<FormControl name="name" placeholder={profile.name} />
+						<FormControl
+							name="name"
+							placeholder={profile.name}
+							className="ml-2"
+						/>
 					</FormGroup>
 
 					<FormGroup>
 						<ControlLabel>Age :</ControlLabel>
-						<FormControl name="age" placeholder={profile.age} />
+						<FormControl
+							name="age"
+							placeholder={profile.age}
+							className="ml-2"
+						/>
 					</FormGroup>
 
 					<FormGroup>
 						<ControlLabel>Blood Group :</ControlLabel>
-						<FormControl name="blood_group" placeholder={profile.blood_group} />
+						<FormControl
+							name="blood_group"
+							placeholder={profile.blood_group}
+							className="ml-2"
+						/>
 					</FormGroup>
 
 					<FormGroup>
@@ -139,6 +158,7 @@ const ProfileForm = ({ profile, isNewUser }) => {
 							name="semester"
 							data={semesters}
 							accepter={SelectPicker}
+							className="ml-2"
 						/>
 					</FormGroup>
 
@@ -148,6 +168,7 @@ const ProfileForm = ({ profile, isNewUser }) => {
 							name="branch"
 							data={departments}
 							accepter={SelectPicker}
+							className="ml-2"
 						/>
 					</FormGroup>
 
@@ -156,26 +177,32 @@ const ProfileForm = ({ profile, isNewUser }) => {
 						<FormControl
 							name="registration_number"
 							placeholder={profile.registration_number}
+							className="ml-2"
 						/>
 					</FormGroup>
 
 					{profile.name && (
-						<Container>
+						<Container className="d-flex">
 							<Content>
 								<img
 									src={profile.avatar || photoURL}
 									style={{
-										height: 150,
-										width: 150,
+										height: 100,
+										width: 100,
 										borderRadius: "50%",
 										margin: 25,
+										marginBottom: 0,
 									}}
 									alt={profile.name || displayName}
 								/>
 							</Content>
 
 							<Footer>
-								<Button>
+								<Button
+									className="justify-content-center"
+									appearance="link"
+									style={{ textDecoration: "none", margin: 0 }}
+								>
 									<AvatarUploadBtn />
 								</Button>
 							</Footer>
@@ -184,8 +211,10 @@ const ProfileForm = ({ profile, isNewUser }) => {
 				</Form>
 			</Content>
 			<Footer>
+				<Divider />
 				<Button
-					block
+					className="justify-content-center"
+					style={{ marginBottom: 20, marginLeft: 35 }}
 					appearance="primary"
 					onClick={onFormSubmit}
 					disabled={isUploading}
