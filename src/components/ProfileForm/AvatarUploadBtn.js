@@ -65,6 +65,7 @@ const AvatarUploadBtn = () => {
 			const downloadUrl = await uploadAvatarResult.ref.getDownloadURL();
 
 			firestore.collection("users").doc(UID).update({ avatar: downloadUrl });
+			firestore.collection("messages").doc(UID).update({ avatar: downloadUrl });
 
 			setIsLoading(false);
 			Alert.info("Avatar has been uploaded", 4000);
