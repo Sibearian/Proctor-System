@@ -209,8 +209,8 @@ const ProfileForm = ({ profile, isNewUser }) => {
 						appearance="picker"
 						defaultValue="A"
 					>
-						<Radio value="Odd">Odd</Radio>
-						<Radio value="Even">Even</Radio>
+						<Radio value={1}>Odd</Radio>
+						<Radio value={2}>Even</Radio>
 					</FormControl>
 				</FormGroup>
 
