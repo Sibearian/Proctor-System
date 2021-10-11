@@ -15,6 +15,7 @@ import {
 	FormGroup,
 	ControlLabel,
 	FormControl,
+	Alert,
 } from "rsuite";
 import { saveAs } from "file-saver";
 
@@ -104,6 +105,12 @@ const StudentPage = () => {
 	const [rowData, setRowData] = useState(null);
 	const [formValue, setFormValue] = useState(null);
 
+	const onSubmit = useCallback(() => {
+		firestore.collection("results").doc(id).update(formValue);
+		Alert.success("Result Edited", 4000);
+		setRowData(null);
+	}, [formValue, id]);
+
 	const onFormChange = useCallback((value) => {
 		setFormValue(value);
 	}, []);
@@ -187,7 +194,11 @@ const StudentPage = () => {
 									>
 										<PanelGroup accordion>
 											<Panel header="Table" defaultExpanded>
-												<Table data={data} autoHeight>
+												<Table
+													data={data}
+													autoHeight
+													onRowClick={(rData) => setRowData(rData)}
+												>
 													<Column>
 														<HeaderCell>Subject Name</HeaderCell>
 														<Cell dataKey="name" />
@@ -258,11 +269,46 @@ const StudentPage = () => {
 																: " Even Semester"}
 														</Modal.Title>
 													</Modal.Header>
+
 													<Modal.Body>
 														<Form onChange={onFormChange} formValue={formValue}>
 															{/* TODO */}
+															<FormGroup>
+																<ControlLabel>Assignment :</ControlLabel>
+																<FormControl
+																	name={`${yearName}.${semester}.${rowData.name}.assignment.scored`}
+																	className="mt-1"
+																/>
+															</FormGroup>
+															<FormGroup>
+																<ControlLabel>Internals :</ControlLabel>
+
+																<FormControl
+																	name={`${yearName}.${semester}.${rowData.name}.internals.internals1`}
+																	className="mt-1"
+																/>
+																<FormControl
+																	name={`${yearName}.${semester}.${rowData.name}.internals.internals2`}
+																	className="mt-1"
+																/>
+																{!rowData.lab && (
+																	<FormControl
+																		name={`${yearName}.${semester}.${rowData.name}.internals.internals3`}
+																		className="mt-1"
+																	/>
+																)}
+															</FormGroup>
+															<FormGroup>
+																<ControlLabel>Final Exam :</ControlLabel>
+																<FormControl
+																	name={`${yearName}.${semester}.${rowData.name}.finals.scored`}
+																/>
+															</FormGroup>
 														</Form>
 													</Modal.Body>
+													<Modal.Footer>
+														<Button onClick={onSubmit}>Submit Edit</Button>
+													</Modal.Footer>
 												</Modal>
 											)}
 										</PanelGroup>
