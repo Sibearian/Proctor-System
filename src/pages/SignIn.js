@@ -4,18 +4,16 @@ import firebase from "firebase/app";
 import {
 	Alert,
 	Button,
-	Col,
 	Container,
 	ControlLabel,
 	Divider,
+	FlexboxGrid,
 	Form,
 	FormControl,
 	FormGroup,
-	Grid,
 	Icon,
 	Loader,
 	Panel,
-	Row,
 } from "rsuite";
 
 import { auth } from "../misc/firebase";
@@ -43,6 +41,11 @@ const SignIn = () => {
 
 			if (additionalUserInfo.isNewUser) {
 				setNewUID(user.uid);
+			}
+			else {
+				setLoading(false)
+				Alert.success("Sign In", 4000)
+				return
 			}
 
 			setLoading(false);
@@ -72,12 +75,26 @@ const SignIn = () => {
 			setLoading(false);
 			Alert.success("Account Created", 4000);
 		} catch (error) {
+			if (error.code === "auth/email-already-in-use") {
+				auth
+					.signInWithEmailAndPassword(formValue.email, formValue.password)
+					.then(() => {
+						Alert.success("Signed in", 4000);
+					})
+					.catch(() => {});					
+			} else {
+				Alert.error(error.message, 4000);
+			}
 			setLoading(false);
-			Alert.error("Please enter valid details", 4000);
 		}
 
 		open();
 	};
+
+	const onClickForgotPassword = useCallback(() => {
+		auth.sendPasswordResetEmail(formValue.email).catch(() => {});
+		Alert.success("A password reset link is sent to your email");
+	}, [formValue.email]);
 
 	if (loading) {
 		return <Loader center />;
@@ -85,59 +102,52 @@ const SignIn = () => {
 
 	return (
 		<div>
-			<Container>
-				<Grid>
-					<Row>
-						<Col xs={24} md={12}>
-							<Panel bordered header="Welcome to Proctor System">
-								<div>
-									<p>Site to have interactions between proctor and students</p>
-								</div>
-
-								<Panel>
-									<Row>
-										<Col xs={8} md={4}>
-											<Button
-												block
-												color="blue"
-												onClick={() => onGoogleSignIn("google")}
-											>
-												<Icon icon="google" />
-											</Button>
-										</Col>
-										<Col xs={2} md={2}>
-											<Divider vertical>or</Divider>
-										</Col>
-										<Col xs={8} md={4}>
-											<Form
-												style={{ width: 40 }}
-												layout="horizontal"
-												onChange={onFormChange}
-												formValue={formValue}
-											>
-												<FormGroup>
-													<ControlLabel>Email</ControlLabel>
-													<FormControl name="email" />
-												</FormGroup>
-												<FormGroup>
-													<ControlLabel>Password</ControlLabel>
-													<FormControl name="password" />
-												</FormGroup>
-												<Button
-													appearance="ghost"
-													active={loading}
-													onClick={onSignInWithEmail}
-												>
-													Sign Up
-												</Button>
-											</Form>
-										</Col>
-									</Row>
-								</Panel>
-							</Panel>
-						</Col>
-					</Row>
-				</Grid>
+			<Container className="d-flex mt-3 justify-content-center align-items-center">
+				<h1>Welcome to Proctor System</h1>
+				<Panel bordered className="mt-5 h-auto" style={{ minWidth: 500 }}>
+					<FlexboxGrid justify="space-between">
+						<FlexboxGrid.Item>
+							<Button onClick={() => onGoogleSignIn("google")}>
+								<Icon icon="google" /> Google
+							</Button>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item>
+							<Divider vertical style={{ minHeight: 205 }} />
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item>
+							<Form onChange={onFormChange} formValue={formValue}>
+								<FormGroup>
+									<ControlLabel>Email</ControlLabel>
+									<FormControl name="email" />
+								</FormGroup>
+								<FormGroup>
+									<ControlLabel>Password</ControlLabel>
+									<FormControl name="password" />
+								</FormGroup>
+								<FlexboxGrid justify="space-between">
+									<FlexboxGrid.Item>
+										<Button
+											appearance="primary"
+											active={loading}
+											onClick={onSignInWithEmail}
+										>
+											Sign Up
+										</Button>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item>
+										<Button
+											appearance="subtle"
+											active={loading}
+											onClick={onClickForgotPassword}
+										>
+											Forgot Password
+										</Button>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</Form>
+						</FlexboxGrid.Item>
+					</FlexboxGrid>
+				</Panel>
 			</Container>
 			{newUID && <CreateUserBtn show={isOpen} close={close} />}
 		</div>

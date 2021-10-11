@@ -1,12 +1,55 @@
+/* eslint-disable prefer-template */
 import { mean } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Container, Panel, PanelGroup, Table, Divider } from "rsuite";
+import {
+	Container,
+	Panel,
+	PanelGroup,
+	Table,
+	Divider,
+	Button,
+	FlexboxGrid,
+	Modal,
+	Form,
+	FormGroup,
+	ControlLabel,
+	FormControl,
+} from "rsuite";
+import { saveAs } from "file-saver";
 
 import { firestore, config } from "../../misc/firebase";
+import { useProfile } from "../../context/profile.context";
 import Chart from "./chart";
 
 const { Cell, HeaderCell, Column } = Table;
+
+const JSONtoCSV = (obj = [{}]) => {
+	let csvStr = "Subject,Assignment,IA 1,IA 2,IA 3,Final Marks, Passed\n";
+	const format = (element) =>
+		element === undefined ? "Not Assigned" : String(element);
+	obj.forEach((subject) => {
+		csvStr +=
+			format(subject.name) +
+			"," +
+			format(subject.assignmentScored) +
+			"," +
+			format(subject.internal1) +
+			"," +
+			format(subject.internal2) +
+			"," +
+			(subject.lab ? "" : format(subject.internal3)) +
+			"," +
+			format(subject.finalsScored) +
+			"," +
+			format(subject.hasPassed) +
+			"\n";
+	});
+
+	const blob = new Blob([csvStr], { type: "text/plain;charset=utf-8" });
+
+	return blob;
+};
 
 const structureDataForTable = (semesterResults = {}) => {
 	const { semester, ...subjects } = semesterResults;
@@ -54,9 +97,16 @@ const structureDataForTable = (semesterResults = {}) => {
 
 const StudentPage = () => {
 	const { id } = useParams();
+	const { profile } = useProfile();
+
 	const [studentData, setStudentData] = useState(null);
 	const [results, setResults] = useState(null);
+	const [rowData, setRowData] = useState(null);
+	const [formValue, setFormValue] = useState(null);
 
+	const onFormChange = useCallback((value) => {
+		setFormValue(value);
+	}, []);
 	useEffect(() => {
 		// get student data
 		const unSubStudent = firestore
@@ -121,75 +171,106 @@ const StudentPage = () => {
 				</div>
 			)}
 			<Divider>Results</Divider>
-			{/* Result Panel Group Component */}
 
 			{results && (
-				<div>
-					<PanelGroup accordion bordered>
-						{results &&
-							Object.keys(results).map((yearName) =>
-								Object.keys(results[yearName]).map((semester) => {
-									const data = structureDataForTable(
-										results[yearName][semester]
-									);
-									return (
-										<Panel
-											header={
-												yearName +
-												(semester === "1" ? " Odd Semester" : " Even Semester")
-											}
-										>
-											<PanelGroup accordion>
-												<Panel header="Table" defaultExpanded>
-													<Table data={data} autoHeight>
-														<Column>
-															<HeaderCell>Subject Name</HeaderCell>
-															<Cell dataKey="name" />
-														</Column>
-														<Column>
-															<HeaderCell>Subject Is</HeaderCell>
-															<Cell>
-																{(rowData) =>
-																	rowData.lab ? "Practicals" : "Theory"
-																}
-															</Cell>
-														</Column>
-														<Column>
-															<HeaderCell>Assignment</HeaderCell>
-															<Cell dataKey="assignmentScored" />
-														</Column>
-														<Column>
-															<HeaderCell>IA 1</HeaderCell>
-															<Cell dataKey="internal1" />
-														</Column>
-														<Column>
-															<HeaderCell>IA 2</HeaderCell>
-															<Cell dataKey="internal2" />
-														</Column>
-														<Column>
-															<HeaderCell>IA 3</HeaderCell>
-															<Cell dataKey="internal3" />
-														</Column>
-														<Column>
-															<HeaderCell>Final Marks</HeaderCell>
-															<Cell dataKey="finalsScored" />
-														</Column>
-														<Column>
-															<HeaderCell>Passed</HeaderCell>
-															<Cell dataKey="hasPassed" />
-														</Column>
-													</Table>
-												</Panel>
-												<Panel header="Chart">
-													<Chart data={data} />
-												</Panel>
-											</PanelGroup>
-										</Panel>
-									);
-								})
-							)}
-					</PanelGroup>
-				</div>
+				<PanelGroup accordion bordered>
+					{results &&
+						Object.keys(results).map((yearName) =>
+							Object.keys(results[yearName]).map((semester) => {
+								const data = structureDataForTable(results[yearName][semester]);
+								return (
+									<Panel
+										header={
+											yearName +
+											(semester === "1" ? " Odd Semester" : " Even Semester")
+										}
+									>
+										<PanelGroup accordion>
+											<Panel header="Table" defaultExpanded>
+												<Table data={data} autoHeight>
+													<Column>
+														<HeaderCell>Subject Name</HeaderCell>
+														<Cell dataKey="name" />
+													</Column>
+													<Column>
+														<HeaderCell>Subject Is</HeaderCell>
+														<Cell>
+															{(row) => (row.lab ? "Practicals" : "Theory")}
+														</Cell>
+													</Column>
+													<Column>
+														<HeaderCell>Assignment</HeaderCell>
+														<Cell dataKey="assignmentScored" />
+													</Column>
+													<Column>
+														<HeaderCell>IA 1</HeaderCell>
+														<Cell dataKey="internal1" />
+													</Column>
+													<Column>
+														<HeaderCell>IA 2</HeaderCell>
+														<Cell dataKey="internal2" />
+													</Column>
+													<Column>
+														<HeaderCell>IA 3</HeaderCell>
+														<Cell dataKey="internal3" />
+													</Column>
+													<Column>
+														<HeaderCell>Final Marks</HeaderCell>
+														<Cell dataKey="finalsScored" />
+													</Column>
+													<Column>
+														<HeaderCell>Passed</HeaderCell>
+														<Cell dataKey="hasPassed" />
+													</Column>
+												</Table>
+												<FlexboxGrid justify="space-between" className="mt-2">
+													<FlexboxGrid.Item>
+														<Button
+															onClick={() => {
+																saveAs(
+																	JSONtoCSV(data),
+																	`${studentData.name} Year_${yearName} Semester_${semester}.csv`
+																);
+															}}
+														>
+															Download the result
+														</Button>
+													</FlexboxGrid.Item>
+													{profile.student_of === false && (
+														<FlexboxGrid.Item>
+															<Button onClick={() => setRowData(true)}>
+																Edit Results
+															</Button>
+														</FlexboxGrid.Item>
+													)}
+												</FlexboxGrid>
+											</Panel>
+											<Panel header="Chart">
+												<Chart data={data} />
+											</Panel>
+											{rowData && (
+												<Modal onHide={() => setRowData(null)} show={!!rowData}>
+													<Modal.Header>
+														<Modal.Title>
+															Year {yearName}{" "}
+															{semester === "1"
+																? " Odd Semester"
+																: " Even Semester"}
+														</Modal.Title>
+													</Modal.Header>
+													<Modal.Body>
+														<Form onChange={onFormChange} formValue={formValue}>
+															{/* TODO */}
+														</Form>
+													</Modal.Body>
+												</Modal>
+											)}
+										</PanelGroup>
+									</Panel>
+								);
+							})
+						)}
+				</PanelGroup>
 			)}
 		</Container>
 	);

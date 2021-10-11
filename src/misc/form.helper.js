@@ -7,8 +7,14 @@ export const INITIAL_VALUE = {
 	age: "",
 	branch: "",
 	blood_group: "",
-	semester: 1,
+	semester: "1",
 	registration_number: "",
+	father_name: "",
+	mother_name: "",
+	father_number: "",
+	mother_number: "",
+	address: "",
+	number: "",
 };
 
 export const model = Schema.Model({

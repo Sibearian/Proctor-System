@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon, Nav, Sidenav } from "rsuite";
+import { auth } from "../../misc/firebase";
 
 const Navbar = () => {
 	const [activeKey, setActiveKey] = useState("dashboard");
 	const onSelect = (key) => {
 		setActiveKey(key);
 	};
+	const signOut = useCallback(() => {
+		auth.signOut();
+	}, []);
+
 	return (
 		<Sidenav
 			expanded={false}
 			appearance="subtle"
 			activeKey={activeKey}
 			onSelect={onSelect}
+			style={{ height: "100%" }}
 		>
 			<Sidenav.Body>
 				<Nav>
@@ -41,6 +47,13 @@ const Navbar = () => {
 						to="/settings"
 					>
 						Settings
+					</Nav.Item>
+					<Nav.Item
+						style={{ bottom: 10 }}
+						onSelect={signOut}
+						icon={<Icon icon="sign-out" />}
+					>
+						Sign Out
 					</Nav.Item>
 				</Nav>
 			</Sidenav.Body>

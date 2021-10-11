@@ -2,14 +2,16 @@ import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import {
 	Alert,
+	Avatar,
 	Button,
 	ControlLabel,
-	Divider,
+	FlexboxGrid,
 	Form,
 	FormControl,
 	FormGroup,
 	Modal,
 	Panel,
+	PanelGroup,
 } from "rsuite";
 import { merge } from "lodash";
 import { firestore } from "../../../../misc/firebase";
@@ -179,14 +181,15 @@ const EditResultModal = ({ rowData, close }) => {
 				</Title>
 			</Header>
 			<Body>
-				<Panel shaded bordered>
-					<img
-						alt={student.name}
-						src={student.avatar}
-						height={260}
-						width={260}
-					/>
-					<Panel>
+				<FlexboxGrid justify="space-around">
+					<FlexboxGrid.Item>
+						<img
+							alt={student.name}
+							src={student.avatar}
+							style={{ width: 100, height: 100 }}
+						/>
+					</FlexboxGrid.Item>
+					<FlexboxGrid.Item>
 						<p>
 							<small>Registration Number : </small>{" "}
 							{student.registration_number}
@@ -194,51 +197,57 @@ const EditResultModal = ({ rowData, close }) => {
 						<p>
 							<small>Semester : </small> {student.semester}
 						</p>
-					</Panel>
-				</Panel>
-				<Form onChange={onFormChange} formValue={formValue}>
-					{data.map((subject, subKey) => {
-						const name = subject.subjectName;
-						return (
-							<FormGroup key={subKey}>
-								<ControlLabel>{name}</ControlLabel>
-								<Divider />
-								<ControlLabel>
-									Final marks <small>(max {subject.finals.max})</small> :
-								</ControlLabel>
-								<FormControl
-									name={`${name}__finals`}
-									placeholder={subject.finals.scored || "Final marks"}
-								/>
-								<ControlLabel>
-									Assignment <small>(max {subject.assignment.max})</small>:
-								</ControlLabel>
-								<FormControl
-									name={`${name}__assignment`}
-									placeholder={subject.assignment.scored || "Assignment marks"}
-								/>
-								<ControlLabel>
-									Internals <small>(max {subject.internals.max})</small>:
-								</ControlLabel>
-								{Object.keys(subject.internals).map(
-									(internal, internalsKey) => {
-										if (internal === "max") {
-											return null;
-										}
-										return (
-											<FormControl
-												key={internalsKey}
-												name={`${name}__${internal}`}
-												placeholder={
-													subject.internals[`${internal}`] || internal
+					</FlexboxGrid.Item>
+				</FlexboxGrid>
+
+				<Form onChange={onFormChange} formValue={formValue} className="mt-3">
+					<PanelGroup accordion bordered>
+						{data.map((subject, subKey) => {
+							const name = subject.subjectName;
+							return (
+								<Panel header={name}>
+									<FormGroup key={subKey}>
+										<ControlLabel>
+											Final marks <small>(max {subject.finals.max})</small> :
+										</ControlLabel>
+										<FormControl
+											name={`${name}__finals`}
+											placeholder={subject.finals.scored || "Final marks"}
+										/>
+										<ControlLabel  className="mt-2">
+											Assignment <small>(max {subject.assignment.max})</small>:
+										</ControlLabel>
+										<FormControl
+											name={`${name}__assignment`}
+											placeholder={
+												subject.assignment.scored || "Assignment marks"
+											}
+										/>
+										<ControlLabel className="mt-2">
+											Internals <small>(max {subject.internals.max})</small>:
+										</ControlLabel>
+										{Object.keys(subject.internals).map(
+											(internal, internalsKey) => {
+												if (internal === "max") {
+													return null;
 												}
-											/>
-										);
-									}
-								)}
-							</FormGroup>
-						);
-					})}
+												return (
+													<FormControl
+													className="mt-1"
+														key={internalsKey}
+														name={`${name}__${internal}`}
+														placeholder={
+															subject.internals[`${internal}`] || internal
+														}
+													/>
+												);
+											}
+										)}
+									</FormGroup>
+								</Panel>
+							);
+						})}
+					</PanelGroup>
 				</Form>
 			</Body>
 			<Footer>
