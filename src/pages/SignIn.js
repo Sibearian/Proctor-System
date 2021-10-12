@@ -41,11 +41,10 @@ const SignIn = () => {
 
 			if (additionalUserInfo.isNewUser) {
 				setNewUID(user.uid);
-			}
-			else {
-				setLoading(false)
-				Alert.success("Sign In", 4000)
-				return
+			} else {
+				setLoading(false);
+				Alert.success("Sign In", 4000);
+				return;
 			}
 
 			setLoading(false);
@@ -81,7 +80,7 @@ const SignIn = () => {
 					.then(() => {
 						Alert.success("Signed in", 4000);
 					})
-					.catch(() => {});					
+					.catch(() => {});
 			} else {
 				Alert.error(error.message, 4000);
 			}
@@ -103,6 +102,11 @@ const SignIn = () => {
 	return (
 		<div>
 			<Container className="d-flex mt-3 justify-content-center align-items-center">
+				<img
+				style={{backgroundColor: "#6f42c1"}}
+					src="https://ramaiahptedu.in/img/logo-msramaiah.png"
+					alt="Ramaiah Polytechnic"
+				/>
 				<h1>Welcome to Proctor System</h1>
 				<Panel bordered className="mt-5 h-auto" style={{ minWidth: 500 }}>
 					<FlexboxGrid justify="space-between">
