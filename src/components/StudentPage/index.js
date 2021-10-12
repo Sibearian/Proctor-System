@@ -247,23 +247,16 @@ const StudentPage = () => {
 															Download the result
 														</Button>
 													</FlexboxGrid.Item>
-													{profile.student_of === false && (
-														<FlexboxGrid.Item>
-															<Button onClick={() => setRowData(true)}>
-																Edit Results
-															</Button>
-														</FlexboxGrid.Item>
-													)}
 												</FlexboxGrid>
 											</Panel>
 											<Panel header="Chart">
 												<Chart data={data} />
 											</Panel>
-											{rowData && (
+											{rowData && profile.student_of === false && (
 												<Modal onHide={() => setRowData(null)} show={!!rowData}>
 													<Modal.Header>
 														<Modal.Title>
-															Year {yearName}{" "}
+															Year {yearName} 
 															{semester === "1"
 																? " Odd Semester"
 																: " Even Semester"}
@@ -272,7 +265,6 @@ const StudentPage = () => {
 
 													<Modal.Body>
 														<Form onChange={onFormChange} formValue={formValue}>
-															{/* TODO */}
 															<FormGroup>
 																<ControlLabel>Assignment :</ControlLabel>
 																<FormControl
