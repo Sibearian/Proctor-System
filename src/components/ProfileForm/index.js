@@ -28,6 +28,11 @@ const ProfileForm = ({ profile, isNewUser }) => {
 	const [formValue, setFormValue] = useState(INITIAL_VALUE || profile);
 	const [isUploading, setIsUploading] = useState(false);
 	const { uid, photoURL, displayName, email } = auth.currentUser || {};
+	const date = new Date();
+	const [defaultYear, defaultMonth] = [
+		date.getFullYear().toString(),
+		date.getMonth() > 6 && date.getMonth() < 9 ? 1 : 2,
+	];
 
 	const formRef = useRef();
 
@@ -86,8 +91,8 @@ const ProfileForm = ({ profile, isNewUser }) => {
 				.doc(String(uid))
 				.set({
 					uid,
-					[year]: {
-						[semesterIs]: {
+					[year || defaultYear]: {
+						[semesterIs || defaultMonth]: {
 							semester: sem,
 							...data,
 						},
@@ -102,7 +107,7 @@ const ProfileForm = ({ profile, isNewUser }) => {
 				.collection("results")
 				.doc(String(uid))
 				.update({
-					[year]: {
+					[year || defaultYear]: {
 						[semesterIs]: {
 							semester: sem,
 							...data,
@@ -111,6 +116,7 @@ const ProfileForm = ({ profile, isNewUser }) => {
 				});
 
 			Alert.success("Information Updated");
+			setFormValue(INITIAL_VALUE || profile)
 		}
 	};
 	return (

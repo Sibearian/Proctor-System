@@ -36,18 +36,6 @@ export const departments = [
 		label: "Computer Science",
 		value: "CS",
 	},
-	{
-		label: "Civil Engeneering",
-		value: "CE",
-	},
-	{
-		label: "Electrial & Electronic",
-		value: "EE",
-	},
-	{
-		label: "Electrical & Communications",
-		value: "EC",
-	},
 ];
 
 export const semesters = [
@@ -90,31 +78,75 @@ const theoryAssesment = {
 	isLab: false,
 };
 
+const practicalAssesment = {
+	internals: {
+		max: 10,
+	},
+	assignment: {
+		max: 15,
+	},
+	finals: {
+		max: 50,
+	},
+	isLab: true,
+};
+
 export const subjects = {
 	CS: {
 		1: {
-			mathematics: theoryAssesment,
-			science: theoryAssesment,
+			"Engineering Mathematics – I": theoryAssesment,
+			"Applied Science": theoryAssesment,
+			"Concepts of Electrical	And Electronics Engineering": theoryAssesment,
+			"Applied Science Lab": practicalAssesment,
+			"Basic Electronics Lab": practicalAssesment,
+			"Basic Computer Skills Lab": practicalAssesment,
 		},
 		2: {
-			mathematics2: theoryAssesment,
-			science2: theoryAssesment,
+			"Engineering Mathematics – II": theoryAssesment,
+			"Communication Skills in English": theoryAssesment,
+			"Digital and Computer Fundamentals": theoryAssesment,
+			"Digital Electronics Lab": practicalAssesment,
+			"Basic Web Design Lab": practicalAssesment,
+			"Multimedia Lab": practicalAssesment,
 		},
 		3: {
-			C: theoryAssesment,
-			DBMS: theoryAssesment,
+			"Programming with C": theoryAssesment,
+			"Computer Organization": theoryAssesment,
+			"Database Management Systems": theoryAssesment,
+			"Computer Network": theoryAssesment,
+			"Programming with C lab": practicalAssesment,
+			"DBMS and GUI lab": practicalAssesment,
+			"Network Administration lab": practicalAssesment,
+			"Kannada - I": practicalAssesment,
 		},
 		4: {
-			JAVA: theoryAssesment,
-			Linux: theoryAssesment,
+			"Data Structures using C": theoryAssesment,
+			"OOP With Java": theoryAssesment,
+			"Operating System": theoryAssesment,
+			"Professional Ethics & Indian Constitution": theoryAssesment,
+			"Data Structures Lab": practicalAssesment,
+			"OOP with Java Lab": practicalAssesment,
+			"Linux Lab": practicalAssesment,
+			"Kannada - II": practicalAssesment,
 		},
 		5: {
-			Algo: theoryAssesment,
-			Green: theoryAssesment,
+			"Software Engineering": theoryAssesment,
+			"Web Programming": theoryAssesment,
+			"Design and Analysis of Algorithms": theoryAssesment,
+			"Green Computing": theoryAssesment,
+			"Web Programming Lab": practicalAssesment,
+			"Design and Analysis of Algorithms Lab": practicalAssesment,
+			"Professional Practices": practicalAssesment,
+			"Project Work Phase-I": practicalAssesment,
 		},
 		6: {
-			IOT: theoryAssesment,
-			NS: theoryAssesment,
+			"Software Testing": theoryAssesment,
+			"Network Security & Management": theoryAssesment,
+			"Elective": theoryAssesment,
+			"Software Testing Lab": practicalAssesment,
+			"Network Security Lab": practicalAssesment,
+			"Inplant Training": practicalAssesment,
+			"Project Work- II": practicalAssesment,
 		},
 	},
 };

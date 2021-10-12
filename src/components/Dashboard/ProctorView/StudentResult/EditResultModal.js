@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import {
 	Alert,
-	Avatar,
 	Button,
 	ControlLabel,
 	FlexboxGrid,
